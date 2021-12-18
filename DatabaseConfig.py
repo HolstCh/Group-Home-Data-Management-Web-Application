@@ -1,3 +1,5 @@
+from aifc import Error
+
 from flaskext.mysql import MySQL
 from App import app
 

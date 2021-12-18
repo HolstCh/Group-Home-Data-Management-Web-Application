@@ -34,7 +34,7 @@ def account(usr):
     return render_template('designAcc.html', usr=usr)
 
 
-@app.route("/verifyAccount/<username>/<password>", methods=['POST'])
+@app.route("/verifyAccount/<username>/<password>", methods=['GET'])
 def verifyAccount(username, password):
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -49,11 +49,5 @@ def verifyAccount(username, password):
         return redirect(url_for("account", usr=username))
 
 
-#  if request.method == 'GET':
-#       hasAccount = redirect(url_for("verifyAccount", username=user, password=password))
-#  if hasAccount is True:
-#     return redirect(url_for("account", usr=user))
-# redirect(url_for("verifyAccount", username=user, password=password))
-
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

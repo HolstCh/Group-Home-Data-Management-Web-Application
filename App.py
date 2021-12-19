@@ -9,8 +9,10 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # Resource is a class, Hello inherits from Resource, GET is HTTP method, parameter "name" is on add_resource():
 api = Api(app)
 
+
 class Hello(Resource):
-   def get(self, name):
-       return {"Hello":name}
+    def get(self, name):
+        return {"Hello": name}
+
 
 api.add_resource(Hello, '/hello/<name>')

@@ -91,5 +91,13 @@ def log(logShareCode):
         return redirect(url_for("home"))
 
 
+@app.route("/upload/Youth", methods=["POST", "GET"])
+def uploadYouth():
+    if request.method == 'POST':
+        return redirect(url_for('accountYouth'))
+    else:
+        return render_template('uploadYouth.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

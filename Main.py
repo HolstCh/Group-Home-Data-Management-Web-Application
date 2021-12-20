@@ -274,5 +274,32 @@ def getPHE(physicalShareCode):
         connection.close()
 
 
+@app.route("/upload/Youth", methods=["POST", "GET"])
+def uploadYouth():
+    if request.method == 'POST':
+        return redirect(url_for('accountYouth'))
+    else:
+        return render_template('uploadYouth.html')
+
+@app.route("/upload/Pediatrician", methods=["POST", "GET"])
+def uploadPediatrician():
+    if request.method == 'POST':
+        pedSin = request.form["inputPed"]
+        youthName = request.form["inputName"]
+        weight = request.form["inputWeight"]
+        height = request.form["inputHeight"]
+        temperature = request.form["inputTemp"]
+        heartrate = request.form["inputHR"]
+        bloodpr = request.form["inputBP"]
+        respiratory = request.form["inputRR"]
+        presname = request.form["inputPres"]
+        dosage = request.form["inputDosage"]
+        dpd = request.form["inputDPD"]
+        illness = request.form["inputIllness"]
+        return redirect(url_for('accountPed'))
+    else:
+        return render_template('uploadPed.html', SC = "share code", date = "date")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

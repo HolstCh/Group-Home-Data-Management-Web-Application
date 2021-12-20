@@ -277,6 +277,13 @@ def getPHE(physicalShareCode):
 @app.route("/upload/Youth", methods=["POST", "GET"])
 def uploadYouth():
     if request.method == 'POST':
+        return redirect(url_for('accountYouth'))
+    else:
+        return render_template('uploadYouth.html')
+
+@app.route("/upload/Pediatrician", methods=["POST", "GET"])
+def uploadPediatrician():
+    if request.method == 'POST':
         pedSin = request.form["inputPed"]
         youthName = request.form["inputName"]
         weight = request.form["inputWeight"]
@@ -289,13 +296,6 @@ def uploadYouth():
         dosage = request.form["inputDosage"]
         dpd = request.form["inputDPD"]
         illness = request.form["inputIllness"]
-        return redirect(url_for('accountYouth'))
-    else:
-        return render_template('uploadYouth.html')
-
-@app.route("/upload/Pediatrician", methods=["POST", "GET"])
-def uploadPediatrician():
-    if request.method == 'POST':
         return redirect(url_for('accountPed'))
     else:
         return render_template('uploadPed.html', SC = "share code", date = "date")

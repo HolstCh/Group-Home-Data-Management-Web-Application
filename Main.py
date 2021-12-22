@@ -87,8 +87,7 @@ def loadMentalCodes(SIN, username, profession):
         return redirect(url_for("accountPed", usr=username, profession=profession))
 
 
-@app.route("/verifyAccount/<username>/<password>/<profession>",
-           methods=['GET'])  # verifies user and then loads their share codes into a local array
+@app.route("/verifyAccount/<username>/<password>/<profession>", methods=['GET'])  # verifies user and then loads their share codes into a local array
 def verifyAccount(username, password, profession):
     try:
         connection = mysql.connect()
@@ -113,8 +112,7 @@ def verifyAccount(username, password, profession):
         connection.close()
 
 
-@app.route("/verifyProfession/<username>/<password>",
-           methods=['GET'])  # calls verifyAccount() to direct to the professional's page
+@app.route("/verifyProfession/<username>/<password>", methods=['GET'])  # calls verifyAccount() to direct to the professional's page
 def verifyProfession(username, password):
     try:
         connection = mysql.connect()
@@ -199,7 +197,7 @@ def getLog(logShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = " SELECT day, month, year, event, behaviour, actionsTaken, YSIN FROM LOG_CODES as L1, LOG_BOOK as L2" \
+        query = " SELECT day, month, year, event, behaviour, actionsTaken, YSIN, youthName FROM LOG_CODES as L1, LOG_BOOK as L2" \
                 " WHERE L2.logShareCode = %s and L1.logCode = L2.logShareCode"
         info = logShareCode
         cursor.execute(query, info)
@@ -242,7 +240,7 @@ def getPHE(physicalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = " SELECT day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, name, dosage, dosesPerDay, illness" \
+        query = " SELECT day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName, name, dosage, dosesPerDay, illness" \
                 " FROM PHYSICAL_CODES as P1, PHYSICAL_HEALTH_EVALUATION as P2, PRESCRIPTION as P3" \
                 " WHERE P1.physicalCode = P2.physicalShareCode and P2.physicalShareCode = P3.physicalShareCode and P1.physicalCode = %s"
         info = physicalShareCode
@@ -286,7 +284,6 @@ def uploadPed():
     if request.method == 'POST':
         # values to insert into PHE table:
         pedSIN = userSIN
-        print(pedSIN)
         day = date.day
         month = date.month
         year = date.year
@@ -296,6 +293,7 @@ def uploadPed():
         heartRate = request.form["inputHR"]
         bloodPressure = request.form["inputBP"]
         respiratoryRate = request.form["inputRR"]
+        youthName = request.form["inputName"]
 
         # values to insert into Prescription table:
         drugName = request.form["inputPres"]
@@ -306,10 +304,9 @@ def uploadPed():
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
-                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (
-            code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN)
+                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)
             cursor.execute(query, values)
             connection.commit()
 
@@ -320,7 +317,7 @@ def uploadPed():
             cursor.execute(query, values)
             connection.commit()
             print(cursor.rowcount, "record inserted.")
-            result = jsonify("Professional Created")
+            result = jsonify("PHE Created")
             result.status_code = 200
             return result
         except Exception as e:

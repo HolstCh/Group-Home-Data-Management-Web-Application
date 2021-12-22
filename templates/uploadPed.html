@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<title>New Log</title>
+	<style>
+
+		body
+        {
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
+		.form-signin .checkbox
+        {
+			font-weight: normal;
+		}
+
+		.form-signin .form-control {
+			height:  auto;
+			width:  auto;
+			padding:  10px;
+			font-size: 16px;
+		}
+
+		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.header {
+	  		padding: 30px;
+	  		text-align: center;
+	  		background: #4678A5;
+	  		color: white;
+	  		font-size: 30px;
+	  		font-family: Arial;
+		}
+
+		.footer {
+	  		padding: 30px;
+	  		background: #4678A5;
+	  		color: white;
+		}
+
+		.button {
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			padding: 15px;
+			margin: 0 auto;
+			background-color: white;
+			color: black;
+			border: 2px solid #4678A5;
+			transition-duration: 0.4s;
+		}
+
+		.button:active {
+			color: white;
+			background-color: #4678A5;
+			box-shadow: 0 1px #666;
+			transform: translateY(2px);
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+		}
+
+		.form-signin label {
+			display: inline-block;
+        	width: 140px;
+    	}
+
+    	.text-arial {
+			font-family: Arial;
+		}
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "header">
+			<h3 class = "text-muted">CBM Youth Assessment App</h3>
+		</div>
+        <form>
+            <input type="button" value="Go back!" onclick="history.back()">
+        </form>
+		<div class = "jumbotron">
+			<div>
+				<p class = "text-arial">Share Code: {{SC}}</p>
+				<p class = "text-arial">Date: {{date}}</p>
+				<h1 class = "text-arial">Physical Evaluation</h1>
+				<form class = "form-signin" action = "#" method = "post">
+					<label for = "inputName" class = "text-arial">Youth's Name</label>
+					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<br>
+					<label for = "inputWeight" class = "text-arial">Weight</label>
+					<input type = "weight" name = "inputWeight" id = "inputWeight" class = "form-control" placeholder = "Weight(Kilograms)"/>
+					<br>
+					<label for = "inputHeight" class = "text-arial">Height</label>
+					<input type = "height" name = "inputHeight" id = "inputHeight" class = "form-control" placeholder = "Height(Meters)" required>
+					<br>
+					<label for = "inputTemp" class = "text-arial">Temperature</label>
+					<input type = "temperature" name = "inputTemp" id = "inputTemp" class = "form-control" placeholder = "Temperature(Celcius)" required>
+					<br>
+					<label for = "inputHR" class = "text-arial">Heart Rate</label>
+					<input type = "heartrate" name = "inputHR" id = "inputHR" class = "form-control" placeholder = "Heart Rate(BPM)" required>
+					<br>
+					<label for = "inputBP" class = "text-arial">Blood Pressure</label>
+					<input type = "bloodpressure" name = "inputBP" id = "inputBP" class = "form-control" placeholder = "Blood Pressure(mmHg)" required>
+					<br>
+					<label for = "inputRR" class = "text-arial">Respiratory Rate</label>
+					<input type = "respiratoryrate" name = "inputRR" id = "inputRR" class = "form-control" placeholder = "Respiratory Rate(CPM)" required>
+
+					<h1 class = "text-arial">Prescription</h1>
+					<label for = "inputPres" class = "text-arial">Prescription Name</label>
+					<input type = "presname" name = "inputPres" id = "inputPres" class = "form-control" placeholder = "Prescription Name" required>
+					<br>
+					<label for = "inputDosage" class = "text-arial">Dosage</label>
+					<input type = "dosage" name = "inputDosage" id = "inputDosage" class = "form-control" placeholder = "Dosage" required>
+					<br>
+					<label for = "inputDPD" class = "text-arial">Dosage per Day</label>
+					<input type = "dpd" name = "inputDPD" id = "inputDPD" class = "form-control" placeholder = "Dosage per Day" required>
+					<br>
+					<label for = "inputIllness" class = "text-arial">Illness Name</label>
+					<input type = "illness" name = "inputIllness" id = "inputIllness" class = "form-control" placeholder = "Illness Name" required>
+
+					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+				</form>
+			</div>
+
+			<footer class = "footer">
+				<p>&copy; CBM Company 2021</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

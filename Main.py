@@ -12,6 +12,8 @@ allLogCodes = {}
 allMentalCodes = {}
 
 userSIN = 0  # user's sin is saved globally when logging in
+userName = ""
+userProfession = ""
 
 
 @app.route("/")
@@ -33,9 +35,63 @@ def home():
 def newAccount():
     if request.method == 'POST':
         user = request.form["inputUsername"]
-        return redirect(url_for("account", usr=user))  # go to user's account page
+        password = request.form["inputPassword"]
+        return redirect(url_for("moreNewAccount", user=user, password=password))  # go to user's account page
     else:
         return render_template('designNew.html')
+
+
+@app.route("/moreNewAccount/<user>/<password>", methods=["POST", "GET"])
+def moreNewAccount(user, password):
+    if request.method == 'POST':
+        # values to insert into Professional (sin as well):
+        city = request.form["city"]
+        fName = request.form["fName"]
+        midInitial = request.form["mid"]
+        lastName = request.form["lName"]
+        phoneNum = request.form["phone"]
+
+        # values to insert into Account (user & password as well):
+        profession = request.form["profName"]
+
+        # values to insert into Has (user as well):
+        sin = request.form["sin"]
+
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "INSERT INTO PROFESSIONAL" \
+                    " (SIN, city, firstName, middleInitial, lastName, phoneNumber)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s)"
+            values = (sin, city, fName, midInitial, lastName, phoneNum)
+            cursor.execute(query, values)
+            connection.commit()
+
+            query = "INSERT INTO ACCOUNT" \
+                    " (username, password, professionName)" \
+                    "VALUES(%s, %s, %s)"
+            values = (user, password, profession)
+            cursor.execute(query, values)
+            connection.commit()
+
+            query = "INSERT INTO HAS" \
+                    " (SIN, username)" \
+                    "VALUES(%s, %s)"
+            values = (sin, user)
+            cursor.execute(query, values)
+            connection.commit()
+
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("New Account Created")
+            result.status_code = 200
+            return redirect(url_for("home"))  # go back to login page
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        return render_template('moreDesignNew.html', user=user)
 
 
 @app.route("/accountYouth/<usr>/<profession>")
@@ -87,7 +143,8 @@ def loadMentalCodes(SIN, username, profession):
         return redirect(url_for("accountPed", usr=username, profession=profession))
 
 
-@app.route("/verifyAccount/<username>/<password>/<profession>", methods=['GET'])  # verifies user and then loads their share codes into a local array
+@app.route("/verifyAccount/<username>/<password>/<profession>",
+           methods=['GET'])  # verifies user and then loads their share codes into a local array
 def verifyAccount(username, password, profession):
     try:
         connection = mysql.connect()
@@ -99,6 +156,10 @@ def verifyAccount(username, password, profession):
         sin = cursor.fetchone()
         global userSIN
         userSIN = sin[0]  # save user's SIN
+        global userName
+        userName = username
+        global userProfession
+        userProfession = profession
         print(userSIN)
         if not sin:
             print('Error: no account')
@@ -112,7 +173,8 @@ def verifyAccount(username, password, profession):
         connection.close()
 
 
-@app.route("/verifyProfession/<username>/<password>", methods=['GET'])  # calls verifyAccount() to direct to the professional's page
+@app.route("/verifyProfession/<username>/<password>",
+           methods=['GET'])  # calls verifyAccount() to direct to the professional's page
 def verifyProfession(username, password):
     try:
         connection = mysql.connect()
@@ -276,57 +338,65 @@ def generateShareCode():  # counts all rows for all three documents and adds one
         connection.close()
 
 
-@app.route("/uploadPed", methods=['POST', 'GET'])
-def uploadPed():
+@app.route("/uploadPsy", methods=['POST', 'GET'])
+def uploadPsy():
     date = datetime.datetime.now()
     displayDate = date.date()
     code = generateShareCode()
     if request.method == 'POST':
-        # values to insert into PHE table:
-        pedSIN = userSIN
+        # values to insert into MHE table(code included):
+        psySIN = userSIN
+        youthName = request.form["inputName"]
+
+        # values to insert into Therapy table:
+        sessionID = code
+        illness = request.form["inputIllness"]
+        sessLength = request.form["inputLength"]
         day = date.day
         month = date.month
         year = date.year
-        weight = request.form["inputWeight"]
-        height = request.form["inputHeight"]
-        temperature = request.form["inputTemp"]
-        heartRate = request.form["inputHR"]
-        bloodPressure = request.form["inputBP"]
-        respiratoryRate = request.form["inputRR"]
-        youthName = request.form["inputName"]
+        time = request.form["inputTime"]
+        therapyMethod = request.form["inputMethod"]
 
-        # values to insert into Prescription table:
-        drugName = request.form["inputPres"]
-        dosage = request.form["inputDosage"]
-        dosesPerDay = request.form["inputDPD"]
-        illness = request.form["inputIllness"]
+        # values to insert into Symptoms table:
+        symptom = request.form["inputSymptom"]
+        severity = request.form["inputSeverity"]
+
         try:
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
-                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)
+            query = "INSERT INTO MENTAL_HEALTH_EVALUATION" \
+                    " (mentalShareCode, psySIN, youthName)" \
+                    "VALUES(%s, %s, %s)"
+            values = (code, psySIN, youthName)
             cursor.execute(query, values)
             connection.commit()
 
-            query = "INSERT INTO PRESCRIPTION" \
-                    " (name, dosage, dosesPerDay, illness, physicalShareCode)" \
-                    "VALUES(%s, %s, %s, %s, %s)"
-            values = (drugName, dosage, dosesPerDay, illness, code)
+            query = "INSERT INTO THERAPY" \
+                    " (sessionID, illness, sessionLength, day, month, year, time, therapeuticMethod, mentalShareCode)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (sessionID, illness, sessLength, day, month, year, time, therapyMethod, code)
             cursor.execute(query, values)
             connection.commit()
+
+            query = "INSERT INTO SYMPTOMS" \
+                    " (mentalShareCode, symptom, severity)" \
+                    "VALUES(%s, %s, %s)"
+            values = (code, symptom, severity)
+            cursor.execute(query, values)
+            connection.commit()
+
             print(cursor.rowcount, "record inserted.")
-            result = jsonify("PHE Created")
+            result = jsonify("MHE Created")
             result.status_code = 200
-            return result
+            return redirect(url_for("accountPsy", usr=userName, profession=userProfession))  # back to Psy's main page
         except Exception as e:
             print(e)
         finally:
             cursor.close()
             connection.close()
     else:
-        return render_template('uploadPed.html', date=displayDate, SC=code)
+        return render_template('uploadPsy.html', date=displayDate, SC=code)
 
 
 @app.route("/uploadYouth")

@@ -1,14 +1,17 @@
-import requests
 from flask import Flask, redirect, url_for, render_template, request, jsonify, flash
 from DatabaseConfig import mysql
 import requests
 import json
-
 from App import app
+import datetime
 
-allPhysicalCodes = {}
+BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
+
+allPhysicalCodes = {}  # user's share codes is saved globally and are available to them when logging in
 allLogCodes = {}
 allMentalCodes = {}
+
+userSIN = 0  # user's sin is saved globally when logging in
 
 
 @app.route("/")
@@ -53,6 +56,7 @@ def accountPsy(usr, profession):
 @app.route("/loadPhysicalCodes/<SIN>/<username>/<profession>")  # load user physical codes into local array
 def loadPhysicalCodes(SIN, username, profession):
     codes = requests.get("http://127.0.0.1:5000/physicalCodes/" + SIN)
+    global allPhysicalCodes
     allPhysicalCodes = json.loads(codes.text)
     print(allPhysicalCodes)
     print(type(allPhysicalCodes))
@@ -62,6 +66,7 @@ def loadPhysicalCodes(SIN, username, profession):
 @app.route("/loadLogCodes/<SIN>/<username>/<profession>")  # load user log codes into local array
 def loadLogCodes(SIN, username, profession):
     codes = requests.get("http://127.0.0.1:5000/logCodes/" + SIN)
+    global allLogCodes
     allLogCodes = json.loads(codes.text)
     print(allLogCodes)
     return redirect(url_for("loadMentalCodes", SIN=SIN, username=username, profession=profession))
@@ -71,6 +76,7 @@ def loadLogCodes(SIN, username, profession):
     "/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific page
 def loadMentalCodes(SIN, username, profession):
     codes = requests.get("http://127.0.0.1:5000/mentalCodes/" + SIN)
+    global allMentalCodes
     allMentalCodes = json.loads(codes.text)
     print(allMentalCodes)
     if profession == 'Youth Worker':
@@ -92,6 +98,9 @@ def verifyAccount(username, password, profession):
         info = (username, password, profession)
         cursor.execute(query, info)
         sin = cursor.fetchone()
+        global userSIN
+        userSIN = sin[0]  # save user's SIN
+        print(userSIN)
         if not sin:
             print('Error: no account')
             return redirect(url_for("home"))
@@ -185,30 +194,6 @@ def physicalCodes(SIN):
         connection.close()
 
 
-@app.route("/createAccount", methods=['POST', 'GET'])  # work in progress
-def createAccount():
-    try:
-        connection = mysql.connect()
-        cursor = connection.cursor()
-        _json = request.json
-        _username = _json['username']
-        _password = _json['password']
-        _professionName = _json['professionName']
-        if _username and _password and _professionName and request.method == 'POST':
-            query = "INSERT INTO ACCOUNT(username, password, professionName)"
-            data = (_username, _password, _professionName)
-            cursor.execute(query, data)
-            cursor.commit()
-            result = jsonify("Professional Created")
-            result.status_code = 200
-            return result
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        connection.close()
-
-
 @app.route("/getLog/<logShareCode>", methods=['GET'])  # get JSON object of a log book document using share code
 def getLog(logShareCode):
     try:
@@ -274,31 +259,82 @@ def getPHE(physicalShareCode):
         connection.close()
 
 
-@app.route("/upload/Youth", methods=["POST", "GET"])
-def uploadYouth():
-    if request.method == 'POST':
-        return redirect(url_for('accountYouth'))
-    else:
-        return render_template('uploadYouth.html')
+def generateShareCode():  # counts all rows for all three documents and adds one so the next "upload" has a unique share code
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "SELECT (SELECT COUNT(*) FROM PHYSICAL_HEALTH_EVALUATION) +" \
+                "(SELECT COUNT(*) FROM MENTAL_HEALTH_EVALUATION) +" \
+                "(SELECT COUNT(*) FROM LOG_BOOK) as totalCount"
+        cursor.execute(query)
+        nextShareCode = cursor.fetchone()[0]
+        nextShareCode = nextShareCode + 1
+        print(nextShareCode)
+        return nextShareCode
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
 
-@app.route("/upload/Pediatrician", methods=["POST", "GET"])
-def uploadPediatrician():
+
+@app.route("/uploadPed", methods=['POST', 'GET'])
+def uploadPed():
+    date = datetime.datetime.now()
+    displayDate = date.date()
+    code = generateShareCode()
     if request.method == 'POST':
-        pedSin = request.form["inputPed"]
-        youthName = request.form["inputName"]
+        # values to insert into PHE table:
+        pedSIN = userSIN
+        print(pedSIN)
+        day = date.day
+        month = date.month
+        year = date.year
         weight = request.form["inputWeight"]
         height = request.form["inputHeight"]
         temperature = request.form["inputTemp"]
-        heartrate = request.form["inputHR"]
-        bloodpr = request.form["inputBP"]
-        respiratory = request.form["inputRR"]
-        presname = request.form["inputPres"]
+        heartRate = request.form["inputHR"]
+        bloodPressure = request.form["inputBP"]
+        respiratoryRate = request.form["inputRR"]
+
+        # values to insert into Prescription table:
+        drugName = request.form["inputPres"]
         dosage = request.form["inputDosage"]
-        dpd = request.form["inputDPD"]
+        dosesPerDay = request.form["inputDPD"]
         illness = request.form["inputIllness"]
-        return redirect(url_for('accountPed'))
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
+                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (
+            code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN)
+            cursor.execute(query, values)
+            connection.commit()
+
+            query = "INSERT INTO PRESCRIPTION" \
+                    " (name, dosage, dosesPerDay, illness, physicalShareCode)" \
+                    "VALUES(%s, %s, %s, %s, %s)"
+            values = (drugName, dosage, dosesPerDay, illness, code)
+            cursor.execute(query, values)
+            connection.commit()
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("Professional Created")
+            result.status_code = 200
+            return result
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
     else:
-        return render_template('uploadPed.html', SC = "share code", date = "date")
+        return render_template('uploadPed.html', date=displayDate, SC=code)
+
+
+@app.route("/uploadYouth")
+def uploadYouth():
+    return render_template('uploadYouth.html')
 
 
 if __name__ == "__main__":

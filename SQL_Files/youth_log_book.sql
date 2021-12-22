@@ -31,6 +31,7 @@ CREATE TABLE `log_book` (
   `behaviour` varchar(255) DEFAULT NULL,
   `actionsTaken` varchar(255) DEFAULT NULL,
   `YSIN` int DEFAULT NULL,
+  `youthName` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`logShareCode`),
   KEY `fk_LOG_BOOK` (`YSIN`),
   CONSTRAINT `fk_LOG_BOOK` FOREIGN KEY (`YSIN`) REFERENCES `youth_worker` (`SIN`)
@@ -43,7 +44,7 @@ CREATE TABLE `log_book` (
 
 LOCK TABLES `log_book` WRITE;
 /*!40000 ALTER TABLE `log_book` DISABLE KEYS */;
-INSERT INTO `log_book` VALUES (200,'Monday','November',1991,'James has a physical altercation','Aggressive','Restrained James and put into Room',123456789);
+INSERT INTO `log_book` VALUES (200,'Monday','November',1991,'James has a physical altercation','Aggressive','Restrained James and put into Room',123456789,NULL);
 /*!40000 ALTER TABLE `log_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-21 18:28:16
+-- Dump completed on 2021-12-21 19:27:17

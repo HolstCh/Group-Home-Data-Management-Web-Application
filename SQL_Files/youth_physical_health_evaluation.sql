@@ -34,6 +34,7 @@ CREATE TABLE `physical_health_evaluation` (
   `bloodPressure` int DEFAULT NULL,
   `respiratoryRate` int DEFAULT NULL,
   `pedSIN` int DEFAULT NULL,
+  `youthName` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`physicalShareCode`),
   KEY `fk_PHE` (`pedSIN`),
   CONSTRAINT `fk_PHE` FOREIGN KEY (`pedSIN`) REFERENCES `pediatrician` (`SIN`)
@@ -46,7 +47,7 @@ CREATE TABLE `physical_health_evaluation` (
 
 LOCK TABLES `physical_health_evaluation` WRITE;
 /*!40000 ALTER TABLE `physical_health_evaluation` DISABLE KEYS */;
-INSERT INTO `physical_health_evaluation` VALUES (5,'21','12',2021,1,'1',1,1,1,1,323456789),(6,'21','12',2021,3,'3',3,3,3,3,323456789),(500,'Tuesday','October',1999,100,'6\'5',100,100,100,100,323456789);
+INSERT INTO `physical_health_evaluation` VALUES (5,'21','12',2021,1,'1',1,1,1,1,323456789,NULL),(6,'21','12',2021,3,'3',3,3,3,3,323456789,NULL),(7,'21','12',2021,4,'4',4,4,4,4,323456789,'blah'),(500,'Tuesday','October',1999,100,'6\'5',100,100,100,100,323456789,NULL);
 /*!40000 ALTER TABLE `physical_health_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-21 18:28:17
+-- Dump completed on 2021-12-21 19:27:14

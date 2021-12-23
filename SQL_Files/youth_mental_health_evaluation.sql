@@ -24,9 +24,6 @@ DROP TABLE IF EXISTS `mental_health_evaluation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mental_health_evaluation` (
   `mentalShareCode` int NOT NULL,
-  `day` varchar(100) DEFAULT NULL,
-  `month` varchar(100) DEFAULT NULL,
-  `year` int DEFAULT NULL,
   `psySIN` int DEFAULT NULL,
   `youthName` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`mentalShareCode`),
@@ -41,7 +38,7 @@ CREATE TABLE `mental_health_evaluation` (
 
 LOCK TABLES `mental_health_evaluation` WRITE;
 /*!40000 ALTER TABLE `mental_health_evaluation` DISABLE KEYS */;
-INSERT INTO `mental_health_evaluation` VALUES (100,'Tuesday','October',1993,223456789,NULL),(223456789,'Tuesday','October',1993,223456789,NULL);
+INSERT INTO `mental_health_evaluation` VALUES (10,223456789,'George'),(11,223456789,'g'),(12,223456789,'213'),(15,223456789,'7'),(18,223456789,'D'),(19,223456789,'D'),(100,223456789,NULL),(223456789,223456789,NULL);
 /*!40000 ALTER TABLE `mental_health_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-21 19:27:16
+-- Dump completed on 2021-12-23 14:52:32

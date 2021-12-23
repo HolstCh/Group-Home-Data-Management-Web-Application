@@ -39,12 +39,12 @@
 			z-index: 2;
 		}
 
-		.form-signin input[type = "password"] {
+		.form-signin input{
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
 
-		.form-signin input[type = "name"] {
+		.form-signin select{
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
@@ -90,7 +90,7 @@
 
 		.form-signin label {
 			display: inline-block;
-        	width: 70px;
+        	width: 80px;
         	text-align: right;
     	}
 
@@ -99,7 +99,7 @@
 		}
 
 	</style>
-</head>	
+</head>
 <body>
 	<div class = "container">
 		<div class = "header">
@@ -116,9 +116,19 @@
 					<input type = "password" name = "inputPassword" id = "inputPassword" class = "form-control" placeholder = "Password" required>
 					<label for = "inputPassword" class = "text-arial">Rewrite Password</label>
 					<input type = "password" name = "inputPassword" id = "inputPassword" class = "form-control" placeholder = "Rewrite Password" required>
-					<div class = "center"><input class = "button" type = "submit" value = "Login"/></div>
+
+					<label for = "inputProfession" class = "text-arial">Profession</label>
+					 <select name="inputProfession" id="inputProfession" class = "form-control">
+					 	<option value="youthworker">Youth Worker</option>
+    					<option value="pediatrician">Pediatrician</option>
+    					<option value="psychologist">Psychologist</option>
+  					</select>
+  					<br><br>
+
+					<div class = "center"><input class = "button" type = "submit" value = "Sign Up"/></div>
 				</form>
 				<div class = "text-arial"><a href = "/home" class = "center">Already have an account? Click here to log in</a></div>
+				<br><br>
 			</div>
 
 			<footer class = "footer">
@@ -128,5 +138,3 @@
 	</div>
 </body>
 </html>
-
-

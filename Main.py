@@ -36,13 +36,14 @@ def newAccount():
     if request.method == 'POST':
         user = request.form["inputUsername"]
         password = request.form["inputPassword"]
-        return redirect(url_for("moreNewAccount", user=user, password=password))  # go to user's account page
+        profession = request.form["inputProfession"]
+        return redirect(url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
     else:
         return render_template('designNew.html')
 
 
-@app.route("/moreNewAccount/<user>/<password>", methods=["POST", "GET"])
-def moreNewAccount(user, password):
+@app.route("/moreNewAccount/<user>/<password>/<profession>", methods=["POST", "GET"])
+def moreNewAccount(user, password, profession):
     if request.method == 'POST':
         # values to insert into Professional (sin as well):
         city = request.form["city"]
@@ -52,7 +53,7 @@ def moreNewAccount(user, password):
         phoneNum = request.form["phone"]
 
         # values to insert into Account (user & password as well):
-        profession = request.form["profName"]
+        professionType = profession
 
         # values to insert into Has (user as well):
         sin = request.form["sin"]
@@ -70,7 +71,7 @@ def moreNewAccount(user, password):
             query = "INSERT INTO ACCOUNT" \
                     " (username, password, professionName)" \
                     "VALUES(%s, %s, %s)"
-            values = (user, password, profession)
+            values = (user, password, professionType)
             cursor.execute(query, values)
             connection.commit()
 
@@ -143,8 +144,7 @@ def loadMentalCodes(SIN, username, profession):
         return redirect(url_for("accountPed", usr=username, profession=profession))
 
 
-@app.route("/verifyAccount/<username>/<password>/<profession>",
-           methods=['GET'])  # verifies user and then loads their share codes into a local array
+@app.route("/verifyAccount/<username>/<password>/<profession>", methods=['GET'])  # verifies user and then loads their share codes into a local array
 def verifyAccount(username, password, profession):
     try:
         connection = mysql.connect()

@@ -84,26 +84,31 @@
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
         <form>
-            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+            <input type="button" value="Go back!" onclick="history.back()">
         </form>
 		<div class = "jumbotron">
 			<div>
-				<p class = "text-arial">Share Code: {{SC}}</p>
-				<p class = "text-arial">Date: {{date}}</p>
-				<h1 class = "text-arial">Log Book</h1>
+				<p class = "text-arial">New User: {{user}}</p>
+				<h1 class = "text-arial">New Account Registration</h1>
 				<form class = "form-signin" action = "#" method = "post">
-					<label for = "inputName" class = "text-arial">Youth's Name</label>
-					<input type = "text" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<label for = "sin" class = "text-arial">SIN</label>
+					<input type = "id" name = "sin" id = "sin" class = "form-control" placeholder = "SIN"/>
 					<br>
-					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
-					<input type = "text" name = "inputBehaviour" id = "inputBehaviour" class = "form-control" placeholder = "Behaviour"/>
+					<label for = "city" class = "text-arial">City</label>
+					<input type = "city name" name = "city" id = "city" class = "form-control" placeholder = "City" required>
 					<br>
-                    <label for = "inputEvent" class = "text-arial">Event</label>
-					<input type = "text" name = "inputEvent" id = "inputEvent" class = "form-control" placeholder = "Event"/>
+					<label for = "fName" class = "text-arial">First Name</label>
+					<input type = "firstName" name = "fName" id = "fName" class = "form-control" placeholder = "First Name" required>
 					<br>
-					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
-					<input type = "text" name = "inputActions" id = "inputActions" class = "form-control" placeholder = "Action(s) Taken" required>
+					<label for = "mid" class = "text-arial">Middle Initial</label>
+					<input type = "midInitial" name = "mid" id = "mid" class = "form-control" placeholder = "Middle Initial" required>
 					<br>
+					<label for = "lName" class = "text-arial">Last Name</label>
+					<input type = "lastName" name = "lName" id = "lName" class = "form-control" placeholder = "Last Name" required>
+					<br>
+					<label for = "phone" class = "text-arial">Phone Number</label>
+					<input type = "number" name = "phone" id = "phone" class = "form-control" placeholder = "Phone Number" required>
+
 					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
 				</form>
 			</div>

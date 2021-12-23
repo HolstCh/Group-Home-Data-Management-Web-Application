@@ -84,25 +84,36 @@
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
         <form>
-            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+            <input type="button" value="Go back!" onclick="history.back()">
         </form>
 		<div class = "jumbotron">
 			<div>
 				<p class = "text-arial">Share Code: {{SC}}</p>
 				<p class = "text-arial">Date: {{date}}</p>
-				<h1 class = "text-arial">Log Book</h1>
+				<h1 class = "text-arial">Therapy</h1>
 				<form class = "form-signin" action = "#" method = "post">
 					<label for = "inputName" class = "text-arial">Youth's Name</label>
-					<input type = "text" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
 					<br>
-					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
-					<input type = "text" name = "inputBehaviour" id = "inputBehaviour" class = "form-control" placeholder = "Behaviour"/>
+					<label for = "inputIllness" class = "text-arial">Illness</label>
+					<input type = "illness" name = "inputIllness" id = "inputIllness" class = "form-control" placeholder = "Illness"/>
 					<br>
-                    <label for = "inputEvent" class = "text-arial">Event</label>
-					<input type = "text" name = "inputEvent" id = "inputEvent" class = "form-control" placeholder = "Event"/>
+					<label for = "inputLength" class = "text-arial">Session Length</label>
+					<input type = "length" name = "inputLength" id = "inputLength" class = "form-control" placeholder = "Session Length(Hours)" required>
 					<br>
-					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
-					<input type = "text" name = "inputActions" id = "inputActions" class = "form-control" placeholder = "Action(s) Taken" required>
+					<label for = "inputTime" class = "text-arial">Time</label>
+					<input type = "time" name = "inputTime" id = "inputTime" class = "form-control" placeholder = "Time of Day" required>
+					<br>
+					<label for = "inputMethod" class = "text-arial">TherapeuticMethod</label>
+					<input type = "therapy" name = "inputMethod" id = "inputMethod" class = "form-control" placeholder = "Therapy Type" required>
+					<br>
+
+					<h1 class = "text-arial">Symptom</h1>
+					<label for = "inputSymptom" class = "text-arial">Symptom</label>
+					<input type = "symp" name = "inputSymptom" id = "inputSymptom" class = "form-control" placeholder = "Symptom" required>
+					<br>
+					<label for = "inputSeverity" class = "text-arial">Severity</label>
+					<input type = "sev" name = "inputSeverity" id = "inputSeverity" class = "form-control" placeholder = "Symptom" required>
 					<br>
 					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
 				</form>

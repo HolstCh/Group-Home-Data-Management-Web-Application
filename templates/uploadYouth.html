@@ -2,49 +2,28 @@
 <html lang = "en">
 
 <head>
-	<title>CBM New Account</title>
+	<title>New Log</title>
 	<style>
 
-		body {
+		body
+        {
 			padding-top: 0px;
 			padding-bottom: 0px;
 		}
 
-		.form-signin {
-			max-width: 330px;
-			padding: 15px;
-			margin: 0 auto;
-		}
-
-		.form-signin .form-signin-heading,
-		.form-signin .checkbox {
-			margin-bottom: 10px;
-		}
-
-		.form-signin .checkbox {
+		.form-signin .checkbox
+        {
 			font-weight: normal;
 		}
 
 		.form-signin .form-control {
-			position: relative;
 			height:  auto;
-			-webkit-box-sizing:  border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
+			width:  auto;
 			padding:  10px;
 			font-size: 16px;
 		}
 
-		.form-signin .form-control:focus {
-			z-index: 2;
-		}
-
-		.form-signin input[type = "password"] {
-			margin-bottom: 10px;
-			border-radius: 4px;
-		}
-
-		.form-signin input[type = "name"] {
+		.form-signin input {
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
@@ -90,8 +69,7 @@
 
 		.form-signin label {
 			display: inline-block;
-        	width: 70px;
-        	text-align: right;
+        	width: 140px;
     	}
 
     	.text-arial {
@@ -105,9 +83,30 @@
 		<div class = "header">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
-
+        <form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
 		<div class = "jumbotron">
-
+			<div>
+				<p class = "text-arial">Share Code: {{SC}}</p>
+				<p class = "text-arial">Date: {{date}}</p>
+				<h1 class = "text-arial">Log Book</h1>
+				<form class = "form-signin" action = "#" method = "post">
+					<label for = "inputName" class = "text-arial">Youth's Name</label>
+					<input type = "text" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<br>
+					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
+					<input type = "text" name = "inputBehaviour" id = "inputBehaviour" class = "form-control" placeholder = "Behaviour"/>
+					<br>
+                    <label for = "inputEvent" class = "text-arial">Event</label>
+					<input type = "text" name = "inputEvent" id = "inputEvent" class = "form-control" placeholder = "Event"/>
+					<br>
+					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
+					<input type = "text" name = "inputActions" id = "inputActions" class = "form-control" placeholder = "Action(s) Taken" required>
+					<br>
+					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+				</form>
+			</div>
 
 			<footer class = "footer">
 				<p>&copy; CBM Company 2021</p>

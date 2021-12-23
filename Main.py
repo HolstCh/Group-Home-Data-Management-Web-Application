@@ -37,7 +37,8 @@ def newAccount():
         user = request.form["inputUsername"]
         password = request.form["inputPassword"]
         profession = request.form["inputProfession"]
-        return redirect(url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
+        return redirect(
+            url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
     else:
         return render_template('designNew.html')
 
@@ -130,7 +131,7 @@ def loadLogCodes(SIN, username, profession):
 
 
 @app.route(
-    "/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific page
+    "/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific main page
 def loadMentalCodes(SIN, username, profession):
     codes = requests.get("http://127.0.0.1:5000/mentalCodes/" + SIN)
     global allMentalCodes
@@ -144,7 +145,8 @@ def loadMentalCodes(SIN, username, profession):
         return redirect(url_for("accountPed", usr=username, profession=profession))
 
 
-@app.route("/verifyAccount/<username>/<password>/<profession>", methods=['GET'])  # verifies user and then loads their share codes into a local array
+@app.route("/verifyAccount/<username>/<password>/<profession>",
+           methods=['GET'])  # verifies user and then loads their share codes into a local array
 def verifyAccount(username, password, profession):
     try:
         connection = mysql.connect()
@@ -157,9 +159,9 @@ def verifyAccount(username, password, profession):
         global userSIN
         userSIN = sin[0]  # save user's SIN
         global userName
-        userName = username
+        userName = username  # save user's username
         global userProfession
-        userProfession = profession
+        userProfession = profession  # save user's Profession Type
         print(userSIN)
         if not sin:
             print('Error: no account')
@@ -280,8 +282,9 @@ def getMHE(mentalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = "SELECT * FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
-                "WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
+        query = "SELECT psySIN, youthName, sessionID, illness, sessionLength, day, month, year, time, therapeuticMethod, symptom, severity"\
+                " FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
+                " WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
                 "and P2.mentalShareCode = P4.mentalShareCode and P1.mentalCode = %s"
         info = mentalShareCode
         cursor.execute(query, info)
@@ -336,6 +339,62 @@ def generateShareCode():  # counts all rows for all three documents and adds one
     finally:
         cursor.close()
         connection.close()
+
+
+@app.route("/uploadPed", methods=['POST', 'GET'])
+def uploadPed():
+    date = datetime.datetime.now()
+    displayDate = date.date()
+    code = generateShareCode()
+    if request.method == 'POST':
+        # values to insert into PHE table:
+        pedSIN = userSIN
+        day = date.day
+        month = date.month
+        year = date.year
+        weight = request.form["inputWeight"]
+        height = request.form["inputHeight"]
+        temperature = request.form["inputTemp"]
+        heartRate = request.form["inputHR"]
+        bloodPressure = request.form["inputBP"]
+        respiratoryRate = request.form["inputRR"]
+        youthName = request.form["inputName"]
+
+        # values to insert into Prescription table:
+        drugName = request.form["inputPres"]
+        dosage = request.form["inputDosage"]
+        dosesPerDay = request.form["inputDPD"]
+        illness = request.form["inputIllness"]
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
+                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (
+                code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN,
+                youthName)
+            cursor.execute(query, values)
+            connection.commit()
+
+            query = "INSERT INTO PRESCRIPTION" \
+                    " (name, dosage, dosesPerDay, illness, physicalShareCode)" \
+                    "VALUES(%s, %s, %s, %s, %s)"
+            values = (drugName, dosage, dosesPerDay, illness, code)
+            cursor.execute(query, values)
+            connection.commit()
+
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("PHE Created")
+            result.status_code = 200
+            return redirect(url_for("accountPed", usr=userName, profession=userProfession))
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        return render_template('uploadPed.html', date=displayDate, SC=code)
 
 
 @app.route("/uploadPsy", methods=['POST', 'GET'])
@@ -399,9 +458,44 @@ def uploadPsy():
         return render_template('uploadPsy.html', date=displayDate, SC=code)
 
 
-@app.route("/uploadYouth")
+@app.route("/uploadYouth", methods=['POST', 'GET'])
 def uploadYouth():
-    return render_template('uploadYouth.html')
+    date = datetime.datetime.now()
+    displayDate = date.date()
+    code = generateShareCode()
+    if request.method == 'POST':
+        # values to insert into Log Book
+        youthName = request.form["inputName"]
+        day = date.day
+        month = date.month
+        year = date.year
+        behaviour = request.form["inputBehaviour"]
+        event = request.form["inputEvent"]
+        actions = request.form["inputActions"]
+        youthSIN = userSIN
+
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "INSERT INTO LOG_BOOK" \
+                    " (logShareCode, day, month, year, event, behaviour, actionsTaken, YSIN, youthName)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (code, day, month, year, event, behaviour, actions, youthSIN, youthName)
+            cursor.execute(query, values)
+            connection.commit()
+
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("Log Book Created")
+            result.status_code = 200
+            return redirect(
+                url_for("accountYouth", usr=userName, profession=userProfession))  # back to Youth's main page
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        return render_template('uploadYouth.html', date=displayDate, SC=code)
 
 
 if __name__ == "__main__":

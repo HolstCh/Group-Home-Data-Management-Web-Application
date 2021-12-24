@@ -93,6 +93,11 @@
 		<div class = "header">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
+
+		<form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
+
 		<div class = "jumbotron">
 			<p class = "text-arial">Share Code: {{SC}}</p>
 				<p class = "text-arial">Date: {{date}}</p>
@@ -136,8 +141,8 @@
   					</select>
   					<br>
   					<p class = "formfield">
-	  					<label for = "inputAction" class = "text-arial">Actions Taken</label>
-						<textarea name = "inputAction" id = "inputAction" class = "text-arial" cols="50" rows="10"placeholder = "Actions Taken"></textarea>
+	  					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
+						<textarea name = "inputActions" id = "inputActions" class = "text-arial" cols="50" rows="10"placeholder = "Action(s) Taken"></textarea>
 					</p>
 					<br>
 

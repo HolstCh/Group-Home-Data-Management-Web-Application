@@ -2,49 +2,33 @@
 <html lang = "en">
 
 <head>
-	<title>CBM New Account</title>
+	<title>New Log</title>
 	<style>
 
-		body {
+		body 
+		 {
 			padding-top: 0px;
 			padding-bottom: 0px;
 		}
 
-		.form-signin {
-			max-width: 330px;
-			padding: 15px;
-			margin: 0 auto;
-		}
-
-		.form-signin .form-signin-heading,
-		.form-signin .checkbox {
-			margin-bottom: 10px;
-		}
-
-		.form-signin .checkbox {
+		.form-signin .checkbox
+        {
 			font-weight: normal;
 		}
 
 		.form-signin .form-control {
-			position: relative;
 			height:  auto;
-			-webkit-box-sizing:  border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
+			width:  auto;
 			padding:  10px;
 			font-size: 16px;
 		}
 
-		.form-signin .form-control:focus {
-			z-index: 2;
-		}
-
-		.form-signin input[type = "password"] {
+		.form-signin input {
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
 
-		.form-signin input[type = "name"] {
+		.form-signin select{
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
@@ -90,9 +74,13 @@
 
 		.form-signin label {
 			display: inline-block;
-        	width: 70px;
-        	text-align: right;
+        	width: 140px;
     	}
+
+    	.formfield * {
+  			vertical-align: middle;
+  			font-size: 16px;
+		}
 
     	.text-arial {
 			font-family: Arial;
@@ -105,9 +93,57 @@
 		<div class = "header">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
-
 		<div class = "jumbotron">
+			<p class = "text-arial">Share Code: {{SC}}</p>
+				<p class = "text-arial">Date: {{date}}</p>
+				<h1 class = "text-arial">Log Book</h1>
+				<form class = "form-signin" action = "#" method = "post">
+					<label for = "inputName" class = "text-arial">Youth's Name</label>
+					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<br>
+					<p class = "formfield">
+	  					<label for = "inputEvent" class = "text-arial">Event</label>
+						<textarea name = "inputEvent" id = "inputEvent" class = "text-arial" cols="50" rows="10"placeholder = "Event"></textarea>
+					</p>
+					<br>
+					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
+					 <select name="inputBehaviour" id="inputBehaviour" class = "form-control">
+					 	<optgroup label="Negative Behaviour">
+						 	<option value="hyperactive">Hyper-active</option>
+	    					<option value="careless">Careless</option>
+	    					<option value="undisciplined">Undisciplined</option>
+	    					<option value="volatile">Volatile</option>
+	    					<option value="aggressive">Aggressive</option>
+	    					<option value="stubborn">Stubborn</option>
+	    					<option value="argumentative">Argumentative</option>
+	    					<option value="selfish">Selfish</option>
+    					</optgroup>
+    					<optgroup label="Positive Behaviour">
+    						<option value="polite">Polite</option>
+    						<option value="caring">Caring</option>
+    						<option value="selfless">Selfless</option>
+    						<option value="positive">Positive</option>
+    					</optgroup>
+    					<optgroup label="Concerning Behaviour">
+    						<option value="anxious">Anxious</option>
+    						<option value="lazy">Lazy</option>
+    						<option value="loner">Loner</option>
+    						<option value="shy">Shy</option>
+    						<option value="down">Down</option>
+    						<option value="guarded">Guarded</option>
+    						<option value="appetiteloss">Loss of Appetite</option>
+    					</optgroup>
+  					</select>
+  					<br>
+  					<p class = "formfield">
+	  					<label for = "inputAction" class = "text-arial">Actions Taken</label>
+						<textarea name = "inputAction" id = "inputAction" class = "text-arial" cols="50" rows="10"placeholder = "Actions Taken"></textarea>
+					</p>
+					<br>
 
+  					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+				</form>
+			</div>
 
 			<footer class = "footer">
 				<p>&copy; CBM Company 2021</p>

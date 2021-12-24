@@ -7,13 +7,13 @@ import datetime
 
 BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
 
-allPhysicalCodes = {}  # user's codes that are used to view available documents and are saved globally when logging in
-allLogCodes = {}
-allMentalCodes = {}
+allPhysicalCodes = []  # user's codes that are used to view available documents and are saved globally when logging in
+allLogCodes = []
+allMentalCodes = []
 
-ownedPhysicalCodes = {}  # one of three will be user's own share codes that load when they login
-ownedLogCodes = {}
-ownedMentalCodes = {}
+ownedPhysicalCodes = []  # one of three will be user's own share codes that load when they login
+ownedLogCodes = []
+ownedMentalCodes = []
 
 userSIN = 0  # user's sin is saved globally when logging in
 userName = ""  # user's username is saved globally when logging in
@@ -27,6 +27,12 @@ def main():
 
 @app.route("/home", methods=["POST", "GET"])
 def home():
+    allPhysicalCodes.clear()
+    allLogCodes.clear()
+    allMentalCodes.clear()
+    ownedPhysicalCodes.clear()
+    ownedLogCodes.clear()
+    ownedMentalCodes.clear()
     if request.method == 'POST':
         user = request.form["inputUsername"]
         password = request.form["inputPassword"]
@@ -130,16 +136,17 @@ def loadLogCodes(SIN, username, profession):
     codes = requests.get(BASE + "logCodes/" + SIN)
     global allLogCodes
     allLogCodes = json.loads(codes.text)
+    print(type(allLogCodes))
     print(allLogCodes)
     return redirect(url_for("loadMentalCodes", SIN=SIN, username=username, profession=profession))
 
 
-@app.route(
-    "/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific main page
+@app.route("/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific main page
 def loadMentalCodes(SIN, username, profession):
     codes = requests.get(BASE + "mentalCodes/" + SIN)
     global allMentalCodes
     allMentalCodes = json.loads(codes.text)
+    print(type(allMentalCodes))
     print(allMentalCodes)
     if profession == 'Youth Worker':
         return redirect(url_for("accountYouth", usr=username, profession=profession))
@@ -228,7 +235,7 @@ def mentalCodes(SIN):
         query = "SELECT mentalCode FROM MENTAL_CODES WHERE SIN = %s"
         sin = SIN
         cursor.execute(query, sin)
-        allCodes = cursor.fetchone()
+        allCodes = cursor.fetchall()
         result = jsonify(allCodes)
         result.status_code = 200
         return result
@@ -528,6 +535,14 @@ def displayPHE(physicalShareCode):
     print(type(rowData))
     return render_template('displayPHE.html', rowData=rowData)
 
+
+@app.route("/sharedFiles", methods=['GET'])
+def sharedFiles():
+    physical = [i[0] for i in allPhysicalCodes]
+    log = [i[0] for i in allLogCodes]
+    mental = [i[0] for i in allMentalCodes]
+    return render_template('sharedFiles.html', sharedPHEs=physical, sharedLogs=log,
+                           sharedMHEs=mental)
 
 if __name__ == "__main__":
     app.run(debug=True)

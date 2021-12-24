@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<title>New Log</title>
+	<style>
+
+		body
+        {
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
+		.form-signin .checkbox
+        {
+			font-weight: normal;
+		}
+
+		.form-signin .form-control {
+			height:  auto;
+			width:  auto;
+			padding:  10px;
+			font-size: 16px;
+		}
+
+		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.header {
+	  		padding: 30px;
+	  		text-align: center;
+	  		background: #4678A5;
+	  		color: white;
+	  		font-size: 30px;
+	  		font-family: Arial;
+		}
+
+		.footer {
+	  		padding: 30px;
+	  		background: #4678A5;
+	  		color: white;
+		}
+
+		.button {
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			padding: 15px;
+			margin: 0 auto;
+			background-color: white;
+			color: black;
+			border: 2px solid #4678A5;
+			transition-duration: 0.4s;
+		}
+
+		.button:active {
+			color: white;
+			background-color: #4678A5;
+			box-shadow: 0 1px #666;
+			transform: translateY(2px);
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+		}
+
+		.form-signin label {
+			display: inline-block;
+        	width: 140px;
+    	}
+
+    	.text-arial {
+			font-family: Arial;
+		}
+
+        tr { display: block; float: left; }
+        th, td { display: block; border: 1px solid black; }
+
+        tr>*:not(:first-child) { border-top: 0; }
+        tr:not(:first-child)>* { border-left:0; }
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "header">
+			<h3 class = "text-muted">CBM Youth Assessment App</h3>
+		</div>
+        <form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
+		<div class = "jumbotron">
+			<div>
+                <h1 class = "text-arial">Physical Health Evaluation:</h1>
+                <table>
+                    <tr>
+                        <th>Client's Name</th>
+                        <th>Day</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                        <th>Weight (Kilograms)</th>
+                        <th>Height (Meters)</th>
+                        <th>Temperature (Celsius)</th>
+                        <th>Heart Rate (BPM)</th>
+                        <th>Blood Pressure (mmHg)</th>
+                        <th>Respiratory Rate (BPM)</th>
+                        <th>Medication Name</th>
+                        <th>Dosage (mg)</th>
+                        <th>Doses Per Day</th>
+                        <th>Illness</th>
+                        <th>Pediatrician's SIN</th>
+                    </tr>
+                    <tr>
+                       <td>{{rowData[0]}}</td>
+                       <td>{{rowData[1]}}</td>
+                       <td>{{rowData[2]}}</td>
+                       <td>{{rowData[3]}}</td>
+                       <td>{{rowData[4]}}</td>
+                       <td>{{rowData[5]}}</td>
+                       <td>{{rowData[6]}}</td>
+                       <td>{{rowData[7]}}</td>
+                       <td>{{rowData[8]}}</td>
+                       <td>{{rowData[9]}}</td>
+                       <td>{{rowData[10]}}</td>
+                       <td>{{rowData[11]}}</td>
+                       <td>{{rowData[12]}}</td>
+                       <td>{{rowData[13]}}</td>
+                       <td>{{rowData[14]}}</td>
+                     </tr>
+                </table>
+			</div>
+
+			<footer class = "footer">
+				<p>&copy; CBM Company 2021</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

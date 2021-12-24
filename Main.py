@@ -7,13 +7,17 @@ import datetime
 
 BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
 
-allPhysicalCodes = {}  # user's share codes is saved globally and are available to them when logging in
+allPhysicalCodes = {}  # user's codes that are used to view available documents and are saved globally when logging in
 allLogCodes = {}
 allMentalCodes = {}
 
+ownedPhysicalCodes = {}  # one of three will be user's own share codes that load when they login
+ownedLogCodes = {}
+ownedMentalCodes = {}
+
 userSIN = 0  # user's sin is saved globally when logging in
-userName = ""
-userProfession = ""
+userName = ""  # user's username is saved globally when logging in
+userProfession = ""  # user's profession is saved globally when logging in
 
 
 @app.route("/")
@@ -113,7 +117,7 @@ def accountPsy(usr, profession):
 
 @app.route("/loadPhysicalCodes/<SIN>/<username>/<profession>")  # load user physical codes into local array
 def loadPhysicalCodes(SIN, username, profession):
-    codes = requests.get("http://127.0.0.1:5000/physicalCodes/" + SIN)
+    codes = requests.get(BASE + "physicalCodes/" + SIN)
     global allPhysicalCodes
     allPhysicalCodes = json.loads(codes.text)
     print(allPhysicalCodes)
@@ -123,7 +127,7 @@ def loadPhysicalCodes(SIN, username, profession):
 
 @app.route("/loadLogCodes/<SIN>/<username>/<profession>")  # load user log codes into local array
 def loadLogCodes(SIN, username, profession):
-    codes = requests.get("http://127.0.0.1:5000/logCodes/" + SIN)
+    codes = requests.get(BASE + "logCodes/" + SIN)
     global allLogCodes
     allLogCodes = json.loads(codes.text)
     print(allLogCodes)
@@ -133,7 +137,7 @@ def loadLogCodes(SIN, username, profession):
 @app.route(
     "/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific main page
 def loadMentalCodes(SIN, username, profession):
-    codes = requests.get("http://127.0.0.1:5000/mentalCodes/" + SIN)
+    codes = requests.get(BASE + "mentalCodes/" + SIN)
     global allMentalCodes
     allMentalCodes = json.loads(codes.text)
     print(allMentalCodes)
@@ -261,7 +265,7 @@ def getLog(logShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = " SELECT day, month, year, event, behaviour, actionsTaken, YSIN, youthName FROM LOG_CODES as L1, LOG_BOOK as L2" \
+        query = " SELECT youthName, day, month, year, event, behaviour, actionsTaken, YSIN FROM LOG_CODES as L1, LOG_BOOK as L2" \
                 " WHERE L2.logShareCode = %s and L1.logCode = L2.logShareCode"
         info = logShareCode
         cursor.execute(query, info)
@@ -282,7 +286,7 @@ def getMHE(mentalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = "SELECT psySIN, youthName, sessionID, illness, sessionLength, day, month, year, time, therapeuticMethod, symptom, severity"\
+        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom, severity, psySIN" \
                 " FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
                 " WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
                 "and P2.mentalShareCode = P4.mentalShareCode and P1.mentalCode = %s"
@@ -305,7 +309,7 @@ def getPHE(physicalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = " SELECT day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName, name, dosage, dosesPerDay, illness" \
+        query = " SELECT youthName, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, name, dosage, dosesPerDay, illness, pedSIN" \
                 " FROM PHYSICAL_CODES as P1, PHYSICAL_HEALTH_EVALUATION as P2, PRESCRIPTION as P3" \
                 " WHERE P1.physicalCode = P2.physicalShareCode and P2.physicalShareCode = P3.physicalShareCode and P1.physicalCode = %s"
         info = physicalShareCode
@@ -496,6 +500,33 @@ def uploadYouth():
             connection.close()
     else:
         return render_template('uploadYouth.html', date=displayDate, SC=code)
+
+
+@app.route("/displayLog/<logShareCode>", methods=['GET'])
+def displayLog(logShareCode):
+    jsonObject = requests.get(BASE + "getLog/" + logShareCode)
+    rowData = json.loads(jsonObject.text)
+    print(rowData)
+    print(type(rowData))
+    return render_template('displayLog.html', rowData=rowData)
+
+
+@app.route("/displayMHE/<mentalShareCode>", methods=['GET'])
+def displayMHE(mentalShareCode):
+    jsonObject = requests.get(BASE + "getMHE/" + mentalShareCode)
+    rowData = json.loads(jsonObject.text)
+    print(rowData)
+    print(type(rowData))
+    return render_template('displayMHE.html', rowData=rowData)
+
+
+@app.route("/displayPHE/<physicalShareCode>", methods=['GET'])
+def displayPHE(physicalShareCode):
+    jsonObject = requests.get(BASE + "getPHE/" + physicalShareCode)
+    rowData = json.loads(jsonObject.text)
+    print(rowData)
+    print(type(rowData))
+    return render_template('displayPHE.html', rowData=rowData)
 
 
 if __name__ == "__main__":

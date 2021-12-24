@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<title>New Log</title>
+	<style>
+
+		body
+        {
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
+		.form-signin .checkbox
+        {
+			font-weight: normal;
+		}
+
+		.form-signin .form-control {
+			height:  auto;
+			width:  auto;
+			padding:  10px;
+			font-size: 16px;
+		}
+
+		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.header {
+	  		padding: 30px;
+	  		text-align: center;
+	  		background: #4678A5;
+	  		color: white;
+	  		font-size: 30px;
+	  		font-family: Arial;
+		}
+
+		.footer {
+	  		padding: 30px;
+	  		background: #4678A5;
+	  		color: white;
+		}
+
+		.button {
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			padding: 15px;
+			margin: 0 auto;
+			background-color: white;
+			color: black;
+			border: 2px solid #4678A5;
+			transition-duration: 0.4s;
+		}
+
+		.button:active {
+			color: white;
+			background-color: #4678A5;
+			box-shadow: 0 1px #666;
+			transform: translateY(2px);
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+		}
+
+		.form-signin label {
+			display: inline-block;
+        	width: 140px;
+    	}
+
+    	.text-arial {
+			font-family: Arial;
+		}
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "header">
+			<h3 class = "text-muted">CBM Youth Assessment App</h3>
+		</div>
+        <form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
+		<div class = "jumbotron">
+			<div>
+				<p class = "text-arial">Share Code: {{SC}}</p>
+				<p class = "text-arial">Date: {{date}}</p>
+				<h1 class = "text-arial">Therapy</h1>
+				<form class = "form-signin" action = "#" method = "post">
+					<label for = "inputName" class = "text-arial">Youth's Name</label>
+					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<br>
+					<label for = "inputIllness" class = "text-arial">Illness</label>
+					<input type = "illness" name = "inputIllness" id = "inputIllness" class = "form-control" placeholder = "Illness"/>
+					<br>
+					<label for = "inputLength" class = "text-arial">Session Length</label>
+					<input type = "length" name = "inputLength" id = "inputLength" class = "form-control" placeholder = "Session Length(Hours)" required>
+					<br>
+					<label for = "inputTime" class = "text-arial">Time</label>
+					<input type = "time" name = "inputTime" id = "inputTime" class = "form-control" placeholder = "Time of Day" required>
+					<br>
+					<label for = "inputMethod" class = "text-arial">TherapeuticMethod</label>
+					<input type = "therapy" name = "inputMethod" id = "inputMethod" class = "form-control" placeholder = "Therapy Type" required>
+					<br>
+
+					<h1 class = "text-arial">Symptom</h1>
+					<label for = "inputSymptom" class = "text-arial">Symptom</label>
+					<input type = "symp" name = "inputSymptom" id = "inputSymptom" class = "form-control" placeholder = "Symptom" required>
+					<br>
+					<label for = "inputSeverity" class = "text-arial">Severity</label>
+					<input type = "sev" name = "inputSeverity" id = "inputSeverity" class = "form-control" placeholder = "Symptom" required>
+					<br>
+					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+				</form>
+			</div>
+
+			<footer class = "footer">
+				<p>&copy; CBM Company 2021</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

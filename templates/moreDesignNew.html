@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<title>New Log</title>
+	<style>
+
+		body
+        {
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
+		.form-signin .checkbox
+        {
+			font-weight: normal;
+		}
+
+		.form-signin .form-control {
+			height:  auto;
+			width:  auto;
+			padding:  10px;
+			font-size: 16px;
+		}
+
+		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.header {
+	  		padding: 30px;
+	  		text-align: center;
+	  		background: #4678A5;
+	  		color: white;
+	  		font-size: 30px;
+	  		font-family: Arial;
+		}
+
+		.footer {
+	  		padding: 30px;
+	  		background: #4678A5;
+	  		color: white;
+		}
+
+		.button {
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			padding: 15px;
+			margin: 0 auto;
+			background-color: white;
+			color: black;
+			border: 2px solid #4678A5;
+			transition-duration: 0.4s;
+		}
+
+		.button:active {
+			color: white;
+			background-color: #4678A5;
+			box-shadow: 0 1px #666;
+			transform: translateY(2px);
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+		}
+
+		.form-signin label {
+			display: inline-block;
+        	width: 140px;
+    	}
+
+    	.text-arial {
+			font-family: Arial;
+		}
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "header">
+			<h3 class = "text-muted">CBM Youth Assessment App</h3>
+		</div>
+        <form>
+            <input type="button" value="Go back!" onclick="history.back()">
+        </form>
+		<div class = "jumbotron">
+			<div>
+				<p class = "text-arial">New User: {{user}}</p>
+				<h1 class = "text-arial">New Account Registration</h1>
+				<form class = "form-signin" action = "#" method = "post">
+					<label for = "sin" class = "text-arial">SIN</label>
+					<input type = "id" name = "sin" id = "sin" class = "form-control" placeholder = "SIN"/>
+					<br>
+					<label for = "city" class = "text-arial">City</label>
+					<input type = "city name" name = "city" id = "city" class = "form-control" placeholder = "City" required>
+					<br>
+					<label for = "fName" class = "text-arial">First Name</label>
+					<input type = "firstName" name = "fName" id = "fName" class = "form-control" placeholder = "First Name" required>
+					<br>
+					<label for = "mid" class = "text-arial">Middle Initial</label>
+					<input type = "midInitial" name = "mid" id = "mid" class = "form-control" placeholder = "Middle Initial" required>
+					<br>
+					<label for = "lName" class = "text-arial">Last Name</label>
+					<input type = "lastName" name = "lName" id = "lName" class = "form-control" placeholder = "Last Name" required>
+					<br>
+					<label for = "phone" class = "text-arial">Phone Number</label>
+					<input type = "number" name = "phone" id = "phone" class = "form-control" placeholder = "Phone Number" required>
+
+					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+				</form>
+			</div>
+
+			<footer class = "footer">
+				<p>&copy; CBM Company 2021</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

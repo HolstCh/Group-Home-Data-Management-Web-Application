@@ -7,9 +7,9 @@ import datetime
 
 BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
 
-allPhysicalCodes = []  # user's codes that are used to view available documents and are saved globally when logging in
-allLogCodes = []
-allMentalCodes = []
+sharedPhysicalCodes = []  # user's codes that are used to view available documents and are saved globally when logging in
+sharedLogCodes = []
+sharedMentalCodes = []
 
 ownedPhysicalCodes = []  # one of three will be user's own share codes that load when they login
 ownedLogCodes = []
@@ -27,9 +27,9 @@ def main():
 
 @app.route("/home", methods=["POST", "GET"])
 def home():
-    allPhysicalCodes.clear()
-    allLogCodes.clear()
-    allMentalCodes.clear()
+    sharedPhysicalCodes.clear()
+    sharedLogCodes.clear()
+    sharedMentalCodes.clear()
     ownedPhysicalCodes.clear()
     ownedLogCodes.clear()
     ownedMentalCodes.clear()
@@ -106,54 +106,87 @@ def moreNewAccount(user, password, profession):
         return render_template('moreDesignNew.html', user=user)
 
 
-@app.route("/accountYouth/<usr>/<profession>")
-def accountYouth(usr, profession):
-    return render_template('designAccYouth.html', usr=usr, profession=profession)
+@app.route("/accountYouth")
+def accountYouth():
+    return render_template('designAccYouth.html', usr=userName, profession=userProfession)
 
 
-@app.route("/accountPed/<usr>/<profession>")
-def accountPed(usr, profession):
-    return render_template('designAccPed.html', usr=usr, profession=profession)
+@app.route("/accountPed")
+def accountPed():
+    return render_template('designAccPed.html', usr=userName, profession=userProfession)
 
 
-@app.route("/accountPsy/<usr>/<profession>")
-def accountPsy(usr, profession):
-    return render_template('designAccPsy.html', usr=usr, profession=profession)
+@app.route("/accountPsy")
+def accountPsy():
+    return render_template('designAccPsy.html', usr=userName, profession=userProfession)
 
 
-@app.route("/loadPhysicalCodes/<SIN>/<username>/<profession>")  # load user physical codes into local array
-def loadPhysicalCodes(SIN, username, profession):
-    codes = requests.get(BASE + "physicalCodes/" + SIN)
-    global allPhysicalCodes
-    allPhysicalCodes = json.loads(codes.text)
-    print(allPhysicalCodes)
-    print(type(allPhysicalCodes))
-    return redirect(url_for("loadLogCodes", SIN=SIN, username=username, profession=profession))
+@app.route("/mainPage")
+def mainPage():
+    if userProfession == 'Youth Worker':
+        return redirect(url_for("accountYouth"))
+    elif userProfession == 'Psychologist':
+        return redirect(url_for("accountPsy"))
+    elif userProfession == 'Pediatrician':
+        return redirect(url_for("accountPed"))
 
 
-@app.route("/loadLogCodes/<SIN>/<username>/<profession>")  # load user log codes into local array
-def loadLogCodes(SIN, username, profession):
-    codes = requests.get(BASE + "logCodes/" + SIN)
-    global allLogCodes
-    allLogCodes = json.loads(codes.text)
-    print(type(allLogCodes))
-    print(allLogCodes)
-    return redirect(url_for("loadMentalCodes", SIN=SIN, username=username, profession=profession))
+@app.route("/loadPhysicalCodes")  # load shared & user physical codes into local array
+def loadPhysicalCodes():
+    allCodes = requests.get(BASE + "getAllPhysicalCodes/" + str(userSIN))
+    global sharedPhysicalCodes
+    sharedPhysicalCodes = json.loads(allCodes.text)
+    print("Shared Physical Codes: ", sharedPhysicalCodes)
+    ownedCodes = requests.get(BASE + "getOwnedPhysicalCodes/" + str(userSIN))
+    global ownedPhysicalCodes
+    ownedPhysicalCodes = json.loads(ownedCodes.text)
+    for i in ownedPhysicalCodes[:]:
+        if i in sharedPhysicalCodes:
+            sharedPhysicalCodes.remove(i)
+
+    print("Owned Physical Codes: ", ownedPhysicalCodes)
+    print("Shared Physical Codes: ", sharedPhysicalCodes)
+
+    return redirect(url_for("loadLogCodes"))
 
 
-@app.route("/loadMentalCodes/<SIN>/<username>/<profession>")  # load user mental codes into local array and then directs to professional specific main page
-def loadMentalCodes(SIN, username, profession):
-    codes = requests.get(BASE + "mentalCodes/" + SIN)
-    global allMentalCodes
-    allMentalCodes = json.loads(codes.text)
-    print(type(allMentalCodes))
-    print(allMentalCodes)
-    if profession == 'Youth Worker':
-        return redirect(url_for("accountYouth", usr=username, profession=profession))
-    elif profession == 'Psychologist':
-        return redirect(url_for("accountPsy", usr=username, profession=profession))
-    elif profession == 'Pediatrician':
-        return redirect(url_for("accountPed", usr=username, profession=profession))
+@app.route("/loadLogCodes")  # load user log codes into local array
+def loadLogCodes():
+    allCodes = requests.get(BASE + "getAllLogCodes/" + str(userSIN))
+    global sharedLogCodes
+    sharedLogCodes = json.loads(allCodes.text)
+    print("Shared Log Codes: ", sharedLogCodes)
+    ownedCodes = requests.get(BASE + "getOwnedLogCodes/" + str(userSIN))
+    global ownedLogCodes
+    ownedLogCodes = json.loads(ownedCodes.text)
+    for i in ownedLogCodes[:]:
+        if i in sharedLogCodes:
+            sharedLogCodes.remove(i)
+
+    print("Owned Log Codes: ", ownedLogCodes)
+    print("Shared Log Codes: ", sharedLogCodes)
+
+    return redirect(url_for("loadMentalCodes"))
+
+
+@app.route(
+    "/loadMentalCodes")  # load user mental codes into local array and then directs to professional specific main page
+def loadMentalCodes():
+    allCodes = requests.get(BASE + "getAllMentalCodes/" + str(userSIN))
+    global sharedMentalCodes
+    sharedMentalCodes = json.loads(allCodes.text)
+    print("Shared Mental Codes: ", sharedMentalCodes)
+    ownedCodes = requests.get(BASE + "getOwnedMentalCodes/" + str(userSIN))
+    global ownedMentalCodes
+    ownedMentalCodes = json.loads(ownedCodes.text)
+    for i in ownedMentalCodes[:]:
+        if i in sharedMentalCodes:
+            sharedMentalCodes.remove(i)
+
+    print("Owned Mental Codes: ", ownedMentalCodes)
+    print("Shared Mental Codes: ", sharedMentalCodes)
+
+    return redirect(url_for("mainPage"))  # function to direct professional user to their own main page
 
 
 @app.route("/verifyAccount/<username>/<password>/<profession>",
@@ -167,6 +200,7 @@ def verifyAccount(username, password, profession):
         info = (username, password, profession)
         cursor.execute(query, info)
         sin = cursor.fetchone()
+
         global userSIN
         userSIN = sin[0]  # save user's SIN
         global userName
@@ -178,7 +212,7 @@ def verifyAccount(username, password, profession):
             print('Error: no account')
             return redirect(url_for("home"))
         else:
-            return redirect(url_for("loadPhysicalCodes", SIN=sin, username=username, profession=profession))
+            return redirect(url_for("loadPhysicalCodes"))
     except Exception as e:
         print(e)
     finally:
@@ -207,8 +241,8 @@ def verifyProfession(username, password):
         connection.close()
 
 
-@app.route("/logCodes/<SIN>", methods=['GET'])
-def logCodes(SIN):
+@app.route("/getAllLogCodes/<SIN>", methods=['GET'])
+def getAllLogCodes(SIN):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
@@ -227,8 +261,8 @@ def logCodes(SIN):
         connection.close()
 
 
-@app.route("/mentalCodes/<SIN>", methods=['GET'])
-def mentalCodes(SIN):
+@app.route("/getAllMentalCodes/<SIN>", methods=['GET'])
+def getAllMentalCodes(SIN):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
@@ -247,8 +281,8 @@ def mentalCodes(SIN):
         connection.close()
 
 
-@app.route("/physicalCodes/<SIN>", methods=['GET'])
-def physicalCodes(SIN):
+@app.route("/getAllPhysicalCodes/<SIN>", methods=['GET'])
+def getAllPhysicalCodes(SIN):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
@@ -327,7 +361,7 @@ def getPHE(physicalShareCode):
         return result
     except Exception as e:
         print(e)
-        print('Error: no log book found')
+        print('Error: no PHE found')
     finally:
         cursor.close()
         connection.close()
@@ -352,7 +386,7 @@ def generateShareCode():  # counts all rows for all three documents and adds one
         connection.close()
 
 
-@app.route("/uploadPed", methods=['POST', 'GET'])
+@app.route("/uploadPed", methods=['POST', 'GET'])  # upload button for Ped which allows uploading PHEs
 def uploadPed():
     date = datetime.datetime.now()
     displayDate = date.date()
@@ -398,7 +432,7 @@ def uploadPed():
             print(cursor.rowcount, "record inserted.")
             result = jsonify("PHE Created")
             result.status_code = 200
-            return redirect(url_for("accountPed", usr=userName, profession=userProfession))
+            return redirect(url_for("accountPed"))
         except Exception as e:
             print(e)
         finally:
@@ -408,7 +442,7 @@ def uploadPed():
         return render_template('uploadPed.html', date=displayDate, SC=code)
 
 
-@app.route("/uploadPsy", methods=['POST', 'GET'])
+@app.route("/uploadPsy", methods=['POST', 'GET'])  # upload button for Psy which allows uploading MHEs
 def uploadPsy():
     date = datetime.datetime.now()
     displayDate = date.date()
@@ -459,7 +493,7 @@ def uploadPsy():
             print(cursor.rowcount, "record inserted.")
             result = jsonify("MHE Created")
             result.status_code = 200
-            return redirect(url_for("accountPsy", usr=userName, profession=userProfession))  # back to Psy's main page
+            return redirect(url_for("accountPsy"))  # back to Psy's main page
         except Exception as e:
             print(e)
         finally:
@@ -469,7 +503,7 @@ def uploadPsy():
         return render_template('uploadPsy.html', date=displayDate, SC=code)
 
 
-@app.route("/uploadYouth", methods=['POST', 'GET'])
+@app.route("/uploadYouth", methods=['POST', 'GET'])  # upload button for Youth Worker which allows uploading Log Books
 def uploadYouth():
     date = datetime.datetime.now()
     displayDate = date.date()
@@ -498,8 +532,7 @@ def uploadYouth():
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Log Book Created")
             result.status_code = 200
-            return redirect(
-                url_for("accountYouth", usr=userName, profession=userProfession))  # back to Youth's main page
+            return redirect(url_for("accountYouth"))  # back to Youth's main page
         except Exception as e:
             print(e)
         finally:
@@ -509,7 +542,7 @@ def uploadYouth():
         return render_template('uploadYouth.html', date=displayDate, SC=code)
 
 
-@app.route("/displayLog/<logShareCode>", methods=['GET'])
+@app.route("/displayLog/<logShareCode>", methods=['GET'])  # display Log Book in HTML table
 def displayLog(logShareCode):
     jsonObject = requests.get(BASE + "getLog/" + logShareCode)
     rowData = json.loads(jsonObject.text)
@@ -518,7 +551,7 @@ def displayLog(logShareCode):
     return render_template('displayLog.html', rowData=rowData)
 
 
-@app.route("/displayMHE/<mentalShareCode>", methods=['GET'])
+@app.route("/displayMHE/<mentalShareCode>", methods=['GET'])  # display MHE in HTML table
 def displayMHE(mentalShareCode):
     jsonObject = requests.get(BASE + "getMHE/" + mentalShareCode)
     rowData = json.loads(jsonObject.text)
@@ -527,7 +560,7 @@ def displayMHE(mentalShareCode):
     return render_template('displayMHE.html', rowData=rowData)
 
 
-@app.route("/displayPHE/<physicalShareCode>", methods=['GET'])
+@app.route("/displayPHE/<physicalShareCode>", methods=['GET'])  # display PHE in HTML table
 def displayPHE(physicalShareCode):
     jsonObject = requests.get(BASE + "getPHE/" + physicalShareCode)
     rowData = json.loads(jsonObject.text)
@@ -536,13 +569,166 @@ def displayPHE(physicalShareCode):
     return render_template('displayPHE.html', rowData=rowData)
 
 
-@app.route("/sharedFiles", methods=['GET'])
+@app.route("/sharedFiles", methods=['GET'])  # universal shared files page where user's shared files are displayed
 def sharedFiles():
-    physical = [i[0] for i in allPhysicalCodes]
-    log = [i[0] for i in allLogCodes]
-    mental = [i[0] for i in allMentalCodes]
-    return render_template('sharedFiles.html', sharedPHEs=physical, sharedLogs=log,
-                           sharedMHEs=mental)
+    physical = [i[0] for i in sharedPhysicalCodes]
+    log = [i[0] for i in sharedLogCodes]
+    mental = [i[0] for i in sharedMentalCodes]
+    return render_template('sharedFiles.html', sharedPHEs=physical, sharedLogs=log, sharedMHEs=mental)
+
+
+@app.route("/myFilesPed", methods=['POST', 'GET'])  # Ped's own files where they can view or share to other users
+def myFilesPed():
+    if request.method == 'POST':
+        # values to input into another user's physical codes for them to access if they have an account
+        shareCode = request.form["shareYourCode"]
+        toUser = request.form["inputUsername"]
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "SELECT SIN FROM HAS WHERE username = %s"
+            cursor.execute(query, toUser)
+            sin = cursor.fetchone()
+
+            query = "INSERT INTO PHYSICAL_CODES (SIN, physicalCode) VALUES(%s, %s)"
+            values = (sin, shareCode)
+            cursor.execute(query, values)
+            connection.commit()
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("Physical Code Shared")
+            result.status_code = 200
+            return redirect(url_for("accountPed"))  # back to Ped's main page
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        physical = [i[0] for i in ownedPhysicalCodes]
+        return render_template('myFilesPed.html', ownedPHEs=physical)
+
+
+@app.route("/myFilesYouth", methods=['POST', 'GET'])  # Youth's own files where they can view or share to other users
+def myFilesYouth():
+    if request.method == 'POST':
+        # values to input into another user's log codes for them to access if they have an account
+        shareCode = request.form["shareYourCode"]
+        toUser = request.form["inputUsername"]
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "SELECT SIN FROM HAS WHERE username = %s"
+            cursor.execute(query, toUser)
+            sin = cursor.fetchone()
+
+            query = "INSERT INTO LOG_CODES (SIN, logCode) VALUES(%s, %s)"
+            values = (sin, shareCode)
+            cursor.execute(query, values)
+            connection.commit()
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("Log Code Shared")
+            result.status_code = 200
+            return redirect(url_for("accountYouth"))  # back to Youth's main page
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        log = [i[0] for i in ownedLogCodes]
+        return render_template('myFilesYouth.html', ownedLogs=log)
+
+
+@app.route("/myFilesPsy", methods=['POST', 'GET'])  # Psy's own files where they can view or share to other users
+def myFilesPsy():
+    if request.method == 'POST':
+        # values to input into another user's mental codes for them to access if they have an account
+        shareCode = request.form["shareYourCode"]
+        toUser = request.form["inputUsername"]
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "SELECT SIN FROM HAS WHERE username = %s"
+            cursor.execute(query, toUser)
+            sin = cursor.fetchone()
+
+            query = "INSERT INTO MENTAL_CODES (SIN, mentalCode) VALUES(%s, %s)"
+            values = (sin, shareCode)
+            cursor.execute(query, values)
+            connection.commit()
+            print(cursor.rowcount, "record inserted.")
+            result = jsonify("Mental Code Shared")
+            result.status_code = 200
+            return redirect(url_for("accountPsy"))  # back to Youth's main page
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+    else:
+        mental = [i[0] for i in ownedMentalCodes]
+        return render_template('myFilesPsy.html', ownedMHEs=mental)
+
+
+@app.route("/getOwnedPhysicalCodes/<SIN>", methods=['GET'])  # loads Ped's owned codes into global list
+def getOwnedPhysicalCodes(SIN):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "SELECT physicalShareCode FROM PHYSICAL_HEALTH_EVALUATION WHERE pedSIN = %s"
+        sin = SIN
+        cursor.execute(query, sin)
+        canView = cursor.fetchall()
+        result = jsonify(canView)
+        result.status_code = 200
+        return result
+    except Exception as e:
+        print(e)
+        print('Error: no PHE found')
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route("/getOwnedLogCodes/<SIN>", methods=['GET'])  # loads Youth Worker's owned codes into global list
+def getOwnedLogCodes(SIN):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "SELECT logShareCode FROM LOG_BOOK WHERE YSIN = %s"
+        sin = SIN
+        cursor.execute(query, sin)
+        canView = cursor.fetchall()
+        result = jsonify(canView)
+        result.status_code = 200
+        return result
+    except Exception as e:
+        print(e)
+        print('Error: No Log Codes found')
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route("/getOwnedMentalCodes/<SIN>", methods=['GET'])  # loads Psy's owned codes into global list
+def getOwnedMentalCodes(SIN):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "SELECT mentalShareCode FROM MENTAL_HEALTH_EVALUATION WHERE psySIN = %s"
+        sin = SIN
+        cursor.execute(query, sin)
+        canView = cursor.fetchall()
+        result = jsonify(canView)
+        result.status_code = 200
+        return result
+    except Exception as e:
+        print(e)
+        print('Error: No Mental Codes found')
+    finally:
+        cursor.close()
+        connection.close()
+
 
 if __name__ == "__main__":
     app.run(debug=True)

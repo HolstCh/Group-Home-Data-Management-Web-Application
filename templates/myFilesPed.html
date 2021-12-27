@@ -88,19 +88,26 @@
         </form>
 		<div class = "jumbotron">
 			<div>
-				<h1 class = "text-arial">Shared Physical Health Evaluation Files:</h1>
-                    {% for link in sharedPHEs %}
+				<h1 class = "text-arial">My Physical Health Evaluation Files:</h1>
+                    {% for link in ownedPHEs %}
                         <a href = "http://127.0.0.1:5000/displayPHE/{{link}}" class = "button">{{link}}</a>
                     {% endfor %}
-                <h1 class = "text-arial">Shared Log Book Files:</h1>
-                    {% for link in sharedLogs %}
-                       <a href = "http://127.0.0.1:5000/displayLog/{{link}}" class = "button">{{link}}</a>
-                    {% endfor %}
-				<h1 class = "text-arial">Shared Mental Health Evaluation Files:</h1>
-                    {% for link in sharedMHEs %}
-                        <a href = "http://127.0.0.1:5000/displayMHE/{{link}}"  class = "button">{{link}}</a>
-                    {% endfor %}
 			</div>
+            <div>
+                <h1 class = "text-arial">Share My File:</h1>
+                <form class = "form-signin" action = "#" method = "post">
+                <label for = "shareYourCode" class = "text-arial">Please select a code to share:</label>
+					 <select name="shareYourCode" id="shareYourCode" class = "form-control">
+                         {% for link in ownedPHEs %}
+                             <option value="{{link}}">{{link}}</option>
+                         {% endfor %}
+  					</select>
+  					<br><br>
+                	<label for = "inputUsername" class = "text-arial">Please input username:</label>
+					<input type = "name" name = "inputUsername" id = "inputUsername" class = "form-control" placeholder = "Username receiving file"/>
+					<div class = "center"><input class = "button" type = "submit" value = "Share My File"/></div>
+				</form>
+            </div>
 			<footer class = "footer">
 				<p>&copy; CBM Company 2021</p>
 			</footer>

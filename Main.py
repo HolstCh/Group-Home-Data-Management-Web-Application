@@ -208,6 +208,7 @@ def verifyAccount(username, password, profession):
         global userProfession
         userProfession = profession  # save user's Profession Type
         print(userSIN)
+        print(userProfession)
         if not sin:
             print('Error: no account')
             return redirect(url_for("home"))
@@ -233,7 +234,7 @@ def verifyProfession(username, password):
         if not profType:
             return redirect(url_for("home"))
         else:
-            return redirect(url_for("verifyAccount", username=username, password=password, profession=profType))
+            return redirect(url_for("verifyAccount", username=username, password=password, profession=profType[0]))
     except Exception as e:
         print(e)
     finally:

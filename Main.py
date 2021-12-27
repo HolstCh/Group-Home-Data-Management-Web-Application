@@ -398,7 +398,9 @@ def getMHE(mentalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom, severity, symptom2, severity2, symptom3, severity3, psySIN" \
+        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom," \
+                " severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5, severity5, symptom6," \
+                "severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10, severity10, psySIN" \
                 " FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
                 " WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
                 "and P2.mentalShareCode = P4.mentalShareCode and P1.mentalCode = %s"
@@ -540,6 +542,20 @@ def uploadPsy():
         severity2 = request.form["inputSeverity2"]
         symptom3 = request.form["inputSymptom3"]
         severity3 = request.form["inputSeverity3"]
+        symptom4 = request.form["inputSymptom4"]
+        severity4 = request.form["inputSeverity4"]
+        symptom5 = request.form["inputSymptom5"]
+        severity5 = request.form["inputSeverity5"]
+        symptom6 = request.form["inputSymptom6"]
+        severity6 = request.form["inputSeverity6"]
+        symptom7 = request.form["inputSymptom7"]
+        severity7 = request.form["inputSeverity7"]
+        symptom8 = request.form["inputSymptom8"]
+        severity8 = request.form["inputSeverity8"]
+        symptom9 = request.form["inputSymptom9"]
+        severity9 = request.form["inputSeverity9"]
+        symptom10 = request.form["inputSymptom10"]
+        severity10 = request.form["inputSeverity10"]
 
         try:
             connection = mysql.connect()
@@ -559,9 +575,12 @@ def uploadPsy():
             connection.commit()
 
             query = "INSERT INTO SYMPTOMS" \
-                    " (mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s)"
-            values = (code, symptom, severity, symptom2, severity2, symptom3, severity3)
+                    "(mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, " \
+                    "symptom5, severity5, symptom6, severity6, symptom7, severity7, symptom8, severity8, " \
+                    "symptom9, severity9, symptom10, severity10)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (code, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5, severity5,
+                      symptom6, severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10, severity10)
             cursor.execute(query, values)
             connection.commit()
 

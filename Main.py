@@ -93,6 +93,13 @@ def moreNewAccount(user, password, profession):
             cursor.execute(query, values)
             connection.commit()
 
+            if professionType == "Youth Worker":
+                insertYouth(sin)
+            elif professionType == "Pediatrician":
+                insertPed(sin)
+            elif professionType == "Psychologist":
+                insertPsy(sin)
+
             print(cursor.rowcount, "record inserted.")
             result = jsonify("New Account Created")
             result.status_code = 200
@@ -104,6 +111,69 @@ def moreNewAccount(user, password, profession):
             connection.close()
     else:
         return render_template('moreDesignNew.html', user=user)
+
+
+def insertYouth(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO YOUTH_WORKER" \
+                " (SIN, certificate)" \
+                "VALUES(%s, %s)"
+        certificate = "Youth Care Worker Certificate"
+        values = (sin, certificate)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Youth Worker Record Inserted.")
+        result = jsonify("Log Book Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def insertPed(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO PEDIATRICIAN" \
+                " (SIN, degree)" \
+                "VALUES(%s, %s)"
+        degree = "Doctor of Medicine"
+        values = (sin, degree)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Pediatrician Record Inserted.")
+        result = jsonify("Pediatrician Record Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def insertPsy(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO PSYCHOLOGIST" \
+                " (SIN, degree)" \
+                "VALUES(%s, %s)"
+        degree = "Ph.D in Psychology"
+        values = (sin, degree)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Psychologist Record Inserted.")
+        result = jsonify("Psychologist Record Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
 
 
 @app.route("/accountYouth")
@@ -169,8 +239,7 @@ def loadLogCodes():
     return redirect(url_for("loadMentalCodes"))
 
 
-@app.route(
-    "/loadMentalCodes")  # load user mental codes into local array and then directs to professional specific main page
+@app.route("/loadMentalCodes")  # load user mental codes into local array and then directs to professional specific main page
 def loadMentalCodes():
     allCodes = requests.get(BASE + "getAllMentalCodes/" + str(userSIN))
     global sharedMentalCodes
@@ -207,6 +276,7 @@ def verifyAccount(username, password, profession):
         userName = username  # save user's username
         global userProfession
         userProfession = profession  # save user's Profession Type
+        print(profession)
         print(userSIN)
         if not sin:
             print('Error: no account')
@@ -327,7 +397,7 @@ def getMHE(mentalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom, severity, psySIN" \
+        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom, severity, symptom2, severity2, symptom3, severity3, psySIN" \
                 " FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
                 " WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
                 "and P2.mentalShareCode = P4.mentalShareCode and P1.mentalCode = %s"
@@ -465,6 +535,10 @@ def uploadPsy():
         # values to insert into Symptoms table:
         symptom = request.form["inputSymptom"]
         severity = request.form["inputSeverity"]
+        symptom2 = request.form["inputSymptom2"]
+        severity2 = request.form["inputSeverity2"]
+        symptom3 = request.form["inputSymptom3"]
+        severity3 = request.form["inputSeverity3"]
 
         try:
             connection = mysql.connect()
@@ -484,9 +558,9 @@ def uploadPsy():
             connection.commit()
 
             query = "INSERT INTO SYMPTOMS" \
-                    " (mentalShareCode, symptom, severity)" \
-                    "VALUES(%s, %s, %s)"
-            values = (code, symptom, severity)
+                    " (mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s)"
+            values = (code, symptom, severity, symptom2, severity2, symptom3, severity3)
             cursor.execute(query, values)
             connection.commit()
 

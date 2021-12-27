@@ -81,6 +81,7 @@
 <body>
 	<div class = "container">
 		<div class = "header">
+			<img src="/static/Youth.png" alt="logo" style="width:150px;height:150px;">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
         <form>
@@ -98,29 +99,31 @@
 					<label for = "inputIllness" class = "text-arial">Illness</label>
 					<input type = "illness" name = "inputIllness" id = "inputIllness" class = "form-control" placeholder = "Illness"/>
 					<br>
-					<label for = "inputLength" class = "text-arial">Session Length</label>
-					<input type = "length" name = "inputLength" id = "inputLength" class = "form-control" placeholder = "Session Length(Hours)" required>
-					<br>
+                    <label for = "inputLength" class = "text-arial">Session Length (Hours)</label>
+                    <select name="inputLength" id="inputLength" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+  					</select>
+  					<br><br>
 					<label for = "inputTime" class = "text-arial">Time</label>
 					<input type = "time" name = "inputTime" id = "inputTime" class = "form-control" placeholder = "Time of Day" required>
 					<br>
-					<label for = "inputMethod" class = "text-arial">TherapeuticMethod</label>
-					<input type = "therapy" name = "inputMethod" id = "inputMethod" class = "form-control" placeholder = "Therapy Type" required>
-					<br>
+                    <label for = "inputMethod" class = "text-arial">Therapeutic Method</label>
+                    <select name="inputMethod" id="inputMethod" class = "form-control">
+                         <option value="Behavioral Therapy">Behavioral Therapy</option>
+                         <option value="Cognitive Therapy">Cognitive Therapy</option>
+                         <option value="Psychoanalysis Therapy">Psychoanalysis Therapy</option>
+                         <option value="Humanistic Therapy">Humanistic Therapy</option>
+  					</select>
+  					<br><br>
 
 					 <h1 class = "text-arial">Symptoms</h1>
                      <label for = "inputSymptom" class = "text-arial">Symptom One</label>
 					 <select name="inputSymptom" id="inputSymptom" class = "form-control">
                          <option value="Depression">Depression</option>
-                         <option value="Anxiety">Anxiety</option>
-                         <option value="Lethargy">Lethargy</option>
-                         <option value="Excessive Fear">Excessive Fear</option>
-                         <option value="Excessive Worrying">Excessive Worrying</option>
-                         <option value="Extreme Mood Changes">Extreme Mood Changes</option>
-                         <option value="Trouble Sleeping">Trouble Sleeping</option>
-                         <option value="Trouble Concentrating">Trouble Concentrating</option>
-                         <option value="Loss of Interest">Loss of Interest</option>
-                         <option value="Appetite">Appetite</option>
   					 </select>
   					 <br><br>
                      <label for = "inputSeverity" class = "text-arial">Severity One</label>
@@ -140,15 +143,6 @@
                     <label for = "inputSymptom2" class = "text-arial">Symptom Two</label>
                     <select name="inputSymptom2" id="inputSymptom2" class = "form-control">
                          <option value="Anxiety">Anxiety</option>
-                         <option value="Depression">Depression</option>
-                         <option value="Lethargy">Lethargy</option>
-                         <option value="Excessive Fear">Excessive Fear</option>
-                         <option value="Excessive Worrying">Excessive Worrying</option>
-                         <option value="Extreme Mood Changes">Extreme Mood Changes</option>
-                         <option value="Trouble Sleeping">Trouble Sleeping</option>
-                         <option value="Trouble Concentrating">Trouble Concentrating</option>
-                         <option value="Loss of Interest">Loss of Interest</option>
-                         <option value="Appetite">Appetite</option>
   					 </select>
   					 <br><br>
 				     <label for = "inputSeverity2" class = "text-arial">Severity Two</label>
@@ -168,19 +162,143 @@
                    <label for = "inputSymptom3" class = "text-arial">Symptom Three</label>
                     <select name="inputSymptom3" id="inputSymptom3" class = "form-control">
                          <option value="Lethargy">Lethargy</option>
-                         <option value="Anxiety">Anxiety</option>
-                         <option value="Depression">Depression</option>
-                         <option value="Excessive Fear">Excessive Fear</option>
-                         <option value="Excessive Worrying">Excessive Worrying</option>
-                         <option value="Extreme Mood Changes">Extreme Mood Changes</option>
-                         <option value="Trouble Sleeping">Trouble Sleeping</option>
-                         <option value="Trouble Concentrating">Trouble Concentrating</option>
-                         <option value="Loss of Interest">Loss of Interest</option>
-                         <option value="Appetite">Appetite</option>
                     </select>
                     <br><br>
                     <label for = "inputSeverity3" class = "text-arial">Severity Three</label>
                     <select name="inputSeverity3" id="inputSeverity3" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                     <label for = "inputSymptom4" class = "text-arial">Symptom Four</label>
+					 <select name="inputSymptom4" id="inputSymptom4" class = "form-control">
+                         <option value="Excessive Fear">Excessive Fear</option>
+  					 </select>
+  					 <br><br>
+                     <label for = "inputSeverity4" class = "text-arial">Severity Four</label>
+					 <select name="inputSeverity4" id="inputSeverity4" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                    <label for = "inputSymptom5" class = "text-arial">Symptom Five</label>
+                    <select name="inputSymptom5" id="inputSymptom5" class = "form-control">
+                         <option value="Excessive Worrying">Excessive Worrying</option>
+  					 </select>
+  					 <br><br>
+				     <label for = "inputSeverity5" class = "text-arial">Severity Five</label>
+					 <select name="inputSeverity5" id="inputSeverity5" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                   <label for = "inputSymptom6" class = "text-arial">Symptom Six</label>
+                    <select name="inputSymptom6" id="inputSymptom6" class = "form-control">
+                         <option value="Extreme Mood Changes">Extreme Mood Changes</option>
+                    </select>
+                    <br><br>
+                    <label for = "inputSeverity6" class = "text-arial">Severity Six</label>
+                    <select name="inputSeverity6" id="inputSeverity6" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                   <label for = "inputSymptom7" class = "text-arial">Symptom Seven</label>
+                    <select name="inputSymptom7" id="inputSymptom3" class = "form-control">
+                         <option value="Trouble Sleeping">Trouble Sleeping</option>
+                    </select>
+                    <br><br>
+                    <label for = "inputSeverity7" class = "text-arial">Severity Seven</label>
+                    <select name="inputSeverity7" id="inputSeverity7" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                     <label for = "inputSymptom8" class = "text-arial">Symptom Eight</label>
+					 <select name="inputSymptom8" id="inputSymptom8" class = "form-control">
+                         <option value="Trouble Concentrating">Trouble Concentrating</option>
+  					 </select>
+  					 <br><br>
+                     <label for = "inputSeverity8" class = "text-arial">Severity Eight</label>
+					 <select name="inputSeverity8" id="inputSeverity8" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                    <label for = "inputSymptom9" class = "text-arial">Symptom Nine</label>
+                    <select name="inputSymptom9" id="inputSymptom9" class = "form-control">
+                         <option value="Loss of Interest">Loss of Interest</option>
+  					 </select>
+  					 <br><br>
+				     <label for = "inputSeverity9" class = "text-arial">Severity Nine</label>
+					 <select name="inputSeverity9" id="inputSeverity9" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+                         <option value="6">6</option>
+                         <option value="7">7</option>
+                         <option value="8">8</option>
+                         <option value="9">9</option>
+                         <option value="10">10</option>
+  					</select>
+  					<br><br>
+                   <label for = "inputSymptom10" class = "text-arial">Symptom Ten</label>
+                    <select name="inputSymptom10" id="inputSymptom10" class = "form-control">
+                         <option value="Appetite">Appetite</option>
+                    </select>
+                    <br><br>
+                    <label for = "inputSeverity10" class = "text-arial">Severity Ten</label>
+                    <select name="inputSeverity10" id="inputSeverity10" class = "form-control">
                          <option value="1">1</option>
                          <option value="2">2</option>
                          <option value="3">3</option>

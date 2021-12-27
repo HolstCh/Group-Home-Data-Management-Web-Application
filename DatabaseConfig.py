@@ -1,5 +1,3 @@
-from aifc import Error
-
 from flaskext.mysql import MySQL
 from App import app
 
@@ -10,5 +8,5 @@ try:
     app.config['MYSQL_DATABASE_DB'] = 'youth'
     app.config['MYSQL_DATABASE_HOST'] = 'localhost'
     mysql.init_app(app)
-except Error as e:
+except Exception as e:
     print(e)

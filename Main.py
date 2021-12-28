@@ -4,6 +4,7 @@ import requests
 import json
 from App import app
 import datetime
+import easygui
 
 BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
 
@@ -101,6 +102,7 @@ def moreNewAccount(user, password, profession):
                 insertPsy(sin)
 
             print(cursor.rowcount, "record inserted.")
+            easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
             result = jsonify("New Account Created")
             result.status_code = 200
             return redirect(url_for("home"))  # go back to login page
@@ -502,6 +504,7 @@ def uploadPed():
             cursor.execute(query, values)
             connection.commit()
 
+            easygui.msgbox(userName + ', your physical health evaluation file was uploaded successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("PHE Created")
             result.status_code = 200
@@ -584,6 +587,7 @@ def uploadPsy():
             cursor.execute(query, values)
             connection.commit()
 
+            easygui.msgbox(userName + ', your mental health evaluation file was uploaded successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("MHE Created")
             result.status_code = 200
@@ -624,6 +628,7 @@ def uploadYouth():
             connection.commit()
 
             print(cursor.rowcount, "record inserted.")
+            easygui.msgbox(userName + ', your log book file was uploaded successfully.', 'Success!')
             result = jsonify("Log Book Created")
             result.status_code = 200
             return redirect(url_for("accountYouth"))  # back to Youth's main page
@@ -673,6 +678,8 @@ def sharedFiles():
 
 @app.route("/myFilesPed", methods=['POST', 'GET'])  # Ped's own files where they can view or share to other users
 def myFilesPed():
+    physical = [i[0] for i in ownedPhysicalCodes]
+    render_template('myFilesPed.html', ownedPHEs=physical)
     if request.method == 'POST':
         # values to input into another user's physical codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -688,6 +695,7 @@ def myFilesPed():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Physical Code Shared")
             result.status_code = 200
@@ -704,6 +712,8 @@ def myFilesPed():
 
 @app.route("/myFilesYouth", methods=['POST', 'GET'])  # Youth's own files where they can view or share to other users
 def myFilesYouth():
+    log = [i[0] for i in ownedLogCodes]
+    render_template('myFilesYouth.html', ownedLogs=log)
     if request.method == 'POST':
         # values to input into another user's log codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -719,6 +729,7 @@ def myFilesYouth():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Log Code Shared")
             result.status_code = 200
@@ -735,6 +746,8 @@ def myFilesYouth():
 
 @app.route("/myFilesPsy", methods=['POST', 'GET'])  # Psy's own files where they can view or share to other users
 def myFilesPsy():
+    mental = [i[0] for i in ownedMentalCodes]
+    render_template('myFilesPsy.html', ownedMHEs=mental)
     if request.method == 'POST':
         # values to input into another user's mental codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -750,6 +763,7 @@ def myFilesPsy():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Mental Code Shared")
             result.status_code = 200

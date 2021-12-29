@@ -4,6 +4,7 @@ import requests
 import json
 from App import app
 import datetime
+import easygui
 
 BASE = "http://127.0.0.1:5000/"  # base URL for directing to different pages within our app
 
@@ -93,7 +94,15 @@ def moreNewAccount(user, password, profession):
             cursor.execute(query, values)
             connection.commit()
 
+            if professionType == "Youth Worker":
+                insertYouth(sin)
+            elif professionType == "Pediatrician":
+                insertPed(sin)
+            elif professionType == "Psychologist":
+                insertPsy(sin)
+
             print(cursor.rowcount, "record inserted.")
+            easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
             result = jsonify("New Account Created")
             result.status_code = 200
             return redirect(url_for("home"))  # go back to login page
@@ -104,6 +113,69 @@ def moreNewAccount(user, password, profession):
             connection.close()
     else:
         return render_template('moreDesignNew.html', user=user)
+
+
+def insertYouth(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO YOUTH_WORKER" \
+                " (SIN, certificate)" \
+                "VALUES(%s, %s)"
+        certificate = "Youth Care Worker Certificate"
+        values = (sin, certificate)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Youth Worker Record Inserted.")
+        result = jsonify("Log Book Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def insertPed(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO PEDIATRICIAN" \
+                " (SIN, degree)" \
+                "VALUES(%s, %s)"
+        degree = "Doctor of Medicine"
+        values = (sin, degree)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Pediatrician Record Inserted.")
+        result = jsonify("Pediatrician Record Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def insertPsy(sin):
+    try:
+        connection = mysql.connect()
+        cursor = connection.cursor()
+        query = "INSERT INTO PSYCHOLOGIST" \
+                " (SIN, degree)" \
+                "VALUES(%s, %s)"
+        degree = "Ph.D in Psychology"
+        values = (sin, degree)
+        cursor.execute(query, values)
+        connection.commit()
+        print(cursor.rowcount, "Psychologist Record Inserted.")
+        result = jsonify("Psychologist Record Created")
+        result.status_code = 200
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
 
 
 @app.route("/accountYouth")
@@ -169,8 +241,7 @@ def loadLogCodes():
     return redirect(url_for("loadMentalCodes"))
 
 
-@app.route(
-    "/loadMentalCodes")  # load user mental codes into local array and then directs to professional specific main page
+@app.route("/loadMentalCodes")  # load user mental codes into local array and then directs to professional specific main page
 def loadMentalCodes():
     allCodes = requests.get(BASE + "getAllMentalCodes/" + str(userSIN))
     global sharedMentalCodes
@@ -207,6 +278,7 @@ def verifyAccount(username, password, profession):
         userName = username  # save user's username
         global userProfession
         userProfession = profession  # save user's Profession Type
+        print(profession)
         print(userSIN)
         print(userProfession)
         if not sin:
@@ -328,7 +400,9 @@ def getMHE(mentalShareCode):
     try:
         connection = mysql.connect()
         cursor = connection.cursor()
-        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom, severity, psySIN" \
+        query = "SELECT youthName, day, month, year, time, sessionID, illness, sessionLength, therapeuticMethod, symptom," \
+                " severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5, severity5, symptom6," \
+                "severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10, severity10, psySIN" \
                 " FROM MENTAL_CODES as P1, MENTAL_HEALTH_EVALUATION as P2, THERAPY as P3, SYMPTOMS as P4" \
                 " WHERE P1.mentalCode = P2.mentalShareCode and P2.mentalShareCode = P3.mentalShareCode " \
                 "and P2.mentalShareCode = P4.mentalShareCode and P1.mentalCode = %s"
@@ -430,6 +504,7 @@ def uploadPed():
             cursor.execute(query, values)
             connection.commit()
 
+            easygui.msgbox(userName + ', your physical health evaluation file was uploaded successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("PHE Created")
             result.status_code = 200
@@ -466,6 +541,24 @@ def uploadPsy():
         # values to insert into Symptoms table:
         symptom = request.form["inputSymptom"]
         severity = request.form["inputSeverity"]
+        symptom2 = request.form["inputSymptom2"]
+        severity2 = request.form["inputSeverity2"]
+        symptom3 = request.form["inputSymptom3"]
+        severity3 = request.form["inputSeverity3"]
+        symptom4 = request.form["inputSymptom4"]
+        severity4 = request.form["inputSeverity4"]
+        symptom5 = request.form["inputSymptom5"]
+        severity5 = request.form["inputSeverity5"]
+        symptom6 = request.form["inputSymptom6"]
+        severity6 = request.form["inputSeverity6"]
+        symptom7 = request.form["inputSymptom7"]
+        severity7 = request.form["inputSeverity7"]
+        symptom8 = request.form["inputSymptom8"]
+        severity8 = request.form["inputSeverity8"]
+        symptom9 = request.form["inputSymptom9"]
+        severity9 = request.form["inputSeverity9"]
+        symptom10 = request.form["inputSymptom10"]
+        severity10 = request.form["inputSeverity10"]
 
         try:
             connection = mysql.connect()
@@ -485,12 +578,16 @@ def uploadPsy():
             connection.commit()
 
             query = "INSERT INTO SYMPTOMS" \
-                    " (mentalShareCode, symptom, severity)" \
-                    "VALUES(%s, %s, %s)"
-            values = (code, symptom, severity)
+                    "(mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, " \
+                    "symptom5, severity5, symptom6, severity6, symptom7, severity7, symptom8, severity8, " \
+                    "symptom9, severity9, symptom10, severity10)" \
+                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (code, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5, severity5,
+                      symptom6, severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10, severity10)
             cursor.execute(query, values)
             connection.commit()
 
+            easygui.msgbox(userName + ', your mental health evaluation file was uploaded successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("MHE Created")
             result.status_code = 200
@@ -531,6 +628,7 @@ def uploadYouth():
             connection.commit()
 
             print(cursor.rowcount, "record inserted.")
+            easygui.msgbox(userName + ', your log book file was uploaded successfully.', 'Success!')
             result = jsonify("Log Book Created")
             result.status_code = 200
             return redirect(url_for("accountYouth"))  # back to Youth's main page
@@ -580,6 +678,8 @@ def sharedFiles():
 
 @app.route("/myFilesPed", methods=['POST', 'GET'])  # Ped's own files where they can view or share to other users
 def myFilesPed():
+    physical = [i[0] for i in ownedPhysicalCodes]
+    render_template('myFilesPed.html', ownedPHEs=physical)
     if request.method == 'POST':
         # values to input into another user's physical codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -595,6 +695,7 @@ def myFilesPed():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Physical Code Shared")
             result.status_code = 200
@@ -611,6 +712,8 @@ def myFilesPed():
 
 @app.route("/myFilesYouth", methods=['POST', 'GET'])  # Youth's own files where they can view or share to other users
 def myFilesYouth():
+    log = [i[0] for i in ownedLogCodes]
+    render_template('myFilesYouth.html', ownedLogs=log)
     if request.method == 'POST':
         # values to input into another user's log codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -626,6 +729,7 @@ def myFilesYouth():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Log Code Shared")
             result.status_code = 200
@@ -642,6 +746,8 @@ def myFilesYouth():
 
 @app.route("/myFilesPsy", methods=['POST', 'GET'])  # Psy's own files where they can view or share to other users
 def myFilesPsy():
+    mental = [i[0] for i in ownedMentalCodes]
+    render_template('myFilesPsy.html', ownedMHEs=mental)
     if request.method == 'POST':
         # values to input into another user's mental codes for them to access if they have an account
         shareCode = request.form["shareYourCode"]
@@ -657,6 +763,7 @@ def myFilesPsy():
             values = (sin, shareCode)
             cursor.execute(query, values)
             connection.commit()
+            easygui.msgbox(userName + ', your share code of ' + shareCode + ' was shared to ' + toUser + ' successfully.', 'Success!')
             print(cursor.rowcount, "record inserted.")
             result = jsonify("Mental Code Shared")
             result.status_code = 200

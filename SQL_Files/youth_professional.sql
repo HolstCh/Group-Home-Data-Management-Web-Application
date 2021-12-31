@@ -39,7 +39,7 @@ CREATE TABLE `professional` (
 
 LOCK TABLES `professional` WRITE;
 /*!40000 ALTER TABLE `professional` DISABLE KEYS */;
-INSERT INTO `professional` VALUES (1,'ed','co','m','last','123'),(2,'12','1','1','1','1'),(5,'5','5','5','5','5'),(6,'6','6','6','6','6'),(8,'8','8','8','8','8'),(9,'9','9','9','9','9'),(123456789,'Edmonton','Colby','J','Trider','780-965-1140'),(223456789,'Calgary','Melanie','K','Chakowski','780-963-3167'),(323456789,'Vancouver','Daniel','R','Feist','780-962-5639');
+INSERT INTO `professional` VALUES (123456789,'Edmonton','Colby','J','Holst','780-963-0153'),(223456789,'Calgary','Melanie','D','Langford','780-965-2213'),(323456789,'Lethbridge','Ivan','T','Pavlov','780-962-9630');
 /*!40000 ALTER TABLE `professional` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:31
+-- Dump completed on 2021-12-30 20:40:09

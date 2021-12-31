@@ -44,7 +44,7 @@ CREATE TABLE `log_book` (
 
 LOCK TABLES `log_book` WRITE;
 /*!40000 ALTER TABLE `log_book` DISABLE KEYS */;
-INSERT INTO `log_book` VALUES (16,'23','12',2021,'1','1','1',123456789,'1'),(17,'23','12',2021,'f','f','f',123456789,'f'),(200,'Monday','November',1991,'James has a physical altercation','Aggressive','Restrained James and put into Room',123456789,NULL);
+INSERT INTO `log_book` VALUES (1,'28','12',2021,'I had asked Alex multiple times to do his homework. He responded with a temper tantrum and started throwing his toys at me.','Aggressive','I had removed all toys from the area and told him that he could not play with his toys until he had completed all of his homework.',123456789,'Alex'),(3,'30','12',2021,'Melissa displayed proper etiquette when we had supper last night. She has made substantial progress considering how rude she was in the past.','Polite','I rewarded her for learning manners at the supper table by giving her extra dessert. She did not expect the reward and seemed thankful.',123456789,'Melissa');
 /*!40000 ALTER TABLE `log_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:28
+-- Dump completed on 2021-12-30 20:40:07

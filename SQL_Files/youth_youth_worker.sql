@@ -36,7 +36,7 @@ CREATE TABLE `youth_worker` (
 
 LOCK TABLES `youth_worker` WRITE;
 /*!40000 ALTER TABLE `youth_worker` DISABLE KEYS */;
-INSERT INTO `youth_worker` VALUES (123456789,'Certificate'),(323456789,'Youth Care Worker Certificate');
+INSERT INTO `youth_worker` VALUES (123456789,'Youth Care Worker Certificate');
 /*!40000 ALTER TABLE `youth_worker` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:31
+-- Dump completed on 2021-12-30 20:40:07

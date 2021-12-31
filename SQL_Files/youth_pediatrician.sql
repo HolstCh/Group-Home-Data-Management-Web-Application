@@ -36,7 +36,7 @@ CREATE TABLE `pediatrician` (
 
 LOCK TABLES `pediatrician` WRITE;
 /*!40000 ALTER TABLE `pediatrician` DISABLE KEYS */;
-INSERT INTO `pediatrician` VALUES (223456789,'Doctor of Medicine'),(323456789,'Doctor of Medicine');
+INSERT INTO `pediatrician` VALUES (223456789,'Doctor of Medicine');
 /*!40000 ALTER TABLE `pediatrician` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:28
+-- Dump completed on 2021-12-30 20:40:08

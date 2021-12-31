@@ -36,7 +36,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES ('123456789','CJT','Youth Worker'),('223456789','MKC','Psychologist'),('323456789','DRF','Pediatrician'),('5','5','Pediatrician'),('6','6','Pediatrician'),('9','9','youthworker'),('asd','asd','Youth Worker'),('da','saf','Youth Worker'),('dqw','dwq','Youth Worker'),('hello','ad','Youth Worker'),('user','ad','Youth Worker');
+INSERT INTO `account` VALUES ('userPed','passPed','Pediatrician'),('userPsy','passPsy','Psychologist'),('userYouth','passYouth','Youth Worker');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:30
+-- Dump completed on 2021-12-30 20:40:05

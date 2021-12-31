@@ -44,7 +44,7 @@ CREATE TABLE `log_book` (
 
 LOCK TABLES `log_book` WRITE;
 /*!40000 ALTER TABLE `log_book` DISABLE KEYS */;
-INSERT INTO `log_book` VALUES (200,'Monday','November',1991,'James has a physical altercation','Aggressive','Restrained James and put into Room',123456789,NULL);
+INSERT INTO `log_book` VALUES (16,'23','12',2021,'1','1','1',123456789,'1'),(17,'23','12',2021,'f','f','f',123456789,'f'),(200,'Monday','November',1991,'James has a physical altercation','Aggressive','Restrained James and put into Room',123456789,NULL);
 /*!40000 ALTER TABLE `log_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-21 19:27:17
+-- Dump completed on 2021-12-23 14:52:28

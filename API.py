@@ -11,7 +11,7 @@ api = Api(app)
 
 
 class MHE(Resource):
-    def get(self, mentalShareCode):
+    def get(self, mentalShareCode):  # retrieve MHE data in JSON format to then be deserialized and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -38,8 +38,8 @@ class MHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, mentalShareCode):
-        try:
+    def post(self, mentalShareCode):  # insert into three tables to upload MHE (no duplicates possible since unique share code)
+        try:                          # returns JSON format for confirmation of insert queries
             code = mentalShareCode
             data = request.values
             psySIN = data['psySIN']
@@ -128,7 +128,7 @@ api.add_resource(MHE, "/MHE/<mentalShareCode>")
 
 
 class PHE(Resource):
-    def get(self, physicalShareCode):
+    def get(self, physicalShareCode): # retrieve PHE data in JSON format to then be deserialized in main.py and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -152,8 +152,8 @@ class PHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, physicalShareCode):
-        try:
+    def post(self, physicalShareCode): # insert into two tables to upload PHE (no duplicates possible since unique share code)
+        try:                           # returns JSON format for confirmation of insert queries
             data = request.values
             code = physicalShareCode
             day = data['day']
@@ -214,7 +214,7 @@ api.add_resource(PHE, "/PHE/<physicalShareCode>")
 
 
 class Log(Resource):
-    def get(self, logShareCode):
+    def get(self, logShareCode): # retrieve Log data in JSON format to then be deserialized in main.py and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -237,8 +237,8 @@ class Log(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, logShareCode):
-        try:
+    def post(self, logShareCode): # insert into one tables to upload Log (no duplicates possible since unique share code)
+        try:                      # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             data = request.values
@@ -282,7 +282,7 @@ api.add_resource(Log, "/Log/<logShareCode>")
 
 
 class AllPhysicalCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve all PHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -309,7 +309,7 @@ api.add_resource(AllPhysicalCodes, "/AllPhysicalCodes/<SIN>")
 
 
 class AllLogCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve all Log share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -336,7 +336,7 @@ api.add_resource(AllLogCodes, "/AllLogCodes/<SIN>")
 
 
 class AllMentalCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -363,7 +363,7 @@ api.add_resource(AllMentalCodes, "/AllMentalCodes/<SIN>")
 
 
 class OwnedPhysicalCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve owned PHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -390,7 +390,7 @@ api.add_resource(OwnedPhysicalCodes, "/OwnedPhysicalCodes/<SIN>")
 
 
 class OwnedLogCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve owned Log share codes in JSON format to be deserialized in main.py and stored in global lists
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -417,7 +417,7 @@ api.add_resource(OwnedLogCodes, "/OwnedLogCodes/<SIN>")
 
 
 class OwnedMentalCodes(Resource):
-    def get(self, SIN):
+    def get(self, SIN): # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global lists
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -444,8 +444,8 @@ api.add_resource(OwnedMentalCodes, "/OwnedMentalCodes/<SIN>")
 
 
 class SendLogCode(Resource):
-    def post(self, toUser, shareCode):
-        try:
+    def post(self, toUser, shareCode): # inserts Log share code to another user's account
+        try:                           # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
@@ -477,8 +477,8 @@ api.add_resource(SendLogCode, "/SendLogCode/<toUser>/<shareCode>")
 
 
 class SendPedCode(Resource):
-    def post(self, toUser, shareCode):
-        try:
+    def post(self, toUser, shareCode): # inserts PHE share code to another user's account
+        try:                           # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
@@ -510,8 +510,8 @@ api.add_resource(SendPedCode, "/SendPedCode/<toUser>/<shareCode>")
 
 
 class SendPsyCode(Resource):
-    def post(self, toUser, shareCode):
-        try:
+    def post(self, toUser, shareCode): # inserts MHE share code to another user's account
+        try:                           # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
@@ -542,8 +542,8 @@ api.add_resource(SendPsyCode, "/SendPsyCode/<toUser>/<shareCode>")
 
 
 class Youth(Resource):
-    def post(self, sin):
-        try:
+    def post(self, sin): # inserts into Youth Worker table when creating a new account
+        try:             # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO YOUTH_WORKER" \
@@ -575,8 +575,8 @@ api.add_resource(Youth, "/Youth/<sin>")
 
 
 class Ped(Resource):
-    def post(self, sin):
-        try:
+    def post(self, sin): # inserts into Pediatrician table when creating a new account
+        try:             # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO PEDIATRICIAN" \
@@ -609,8 +609,8 @@ api.add_resource(Ped, "/Ped/<sin>")
 
 
 class Psy(Resource):
-    def post(self, sin):
-        try:
+    def post(self, sin): # inserts into Psychologist table when creating a new account
+        try:             # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO PSYCHOLOGIST" \

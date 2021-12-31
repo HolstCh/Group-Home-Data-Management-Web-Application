@@ -85,7 +85,8 @@
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
         <form>
-            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()" >
+
         </form>
 		<div class = "jumbotron">
 			<div>
@@ -96,23 +97,24 @@
 					<label for = "inputName" class = "text-arial">Youth's Name</label>
 					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
 					<br>
-					<label for = "inputWeight" class = "text-arial">Weight (Kilograms)</label>
-					<input type = "weight" name = "inputWeight" id = "inputWeight" class = "form-control" placeholder = "Weight (Kilograms)"/>
-					<br>
-					<label for = "inputHeight" class = "text-arial">Height (Meters)</label>
-					<input type = "height" name = "inputHeight" id = "inputHeight" class = "form-control" placeholder = "Height (Meters)" required>
-					<br>
-					<label for = "inputTemp" class = "text-arial">Temperature (Celsius)</label>
-					<input type = "temperature" name = "inputTemp" id = "inputTemp" class = "form-control" placeholder = "Temperature (Celsius)" required>
-					<br>
-					<label for = "inputHR" class = "text-arial">Heart Rate (BPM)</label>
-					<input type = "heartrate" name = "inputHR" id = "inputHR" class = "form-control" placeholder = "Heart Rate (BPM)" required>
-					<br>
-					<label for = "inputBP" class = "text-arial">Blood Pressure (mmHg)</label>
+                    <label for = "inputBP" class = "text-arial">Blood Pressure (systolic/diastolic)</label>
 					<input type = "bloodpressure" name = "inputBP" id = "inputBP" class = "form-control" placeholder = "Blood Pressure (mmHg)" required>
 					<br>
-					<label for = "inputRR" class = "text-arial">Respiratory Rate</label>
-					<input type = "respiratoryrate" name = "inputRR" id = "inputRR" class = "form-control" placeholder = "Respiratory Rate (BPM)" required>
+                    <label for="inputWeight">Weight (Kilograms)</label>
+                    <input type="number" id="inputWeight" name="inputWeight" min="20" max="85" step="1" value="60">
+                    <br>
+                    <label for="inputHeight">Height (Meters)</label>
+                    <input type="number" id="inputHeight" name="inputHeight" min="1.2" max="1.9" step="0.1" value="1.4">
+                    <br>
+                    <label for="inputTemp">Temperature (Celsius)</label>
+                    <input type="number" id="inputTemp" name="inputTemp" min="33" max="39" step="0.1" value="37.0">
+                    <br>
+					<label for="inputHR">Heart Rate (BPM)</label>
+                    <input type="number" id="inputHR" name="inputHR" min="60" max="100" step="1" value="80">
+                    <br>
+                    <label for="inputRR">Respiratory Rate (BPM)</label>
+                    <input type="number" id="inputRR" name="inputRR" min="12" max="16" step="1" value="14">
+                    <br>
 
 					<h1 class = "text-arial">Prescription</h1>
 					<label for = "inputPres" class = "text-arial">Prescription Name</label>
@@ -121,9 +123,15 @@
 					<label for = "inputDosage" class = "text-arial">Dosage (mg)</label>
 					<input type = "dosage" name = "inputDosage" id = "inputDosage" class = "form-control" placeholder = "Dosage (mg)" required>
 					<br>
-					<label for = "inputDPD" class = "text-arial">Doses per Day</label>
-					<input type = "dpd" name = "inputDPD" id = "inputDPD" class = "form-control" placeholder = "Dose(s) per Day" required>
-					<br>
+                    <label for = "inputDPD" class = "text-arial">Dose(s) Per Day</label>
+                    <select name="inputDPD" id="inputDPD" class = "form-control">
+                         <option value="1">1</option>
+                         <option value="2">2</option>
+                         <option value="3">3</option>
+                         <option value="4">4</option>
+                         <option value="5">5</option>
+  					</select>
+  					<br><br>
 					<label for = "inputIllness" class = "text-arial">Illness Name</label>
 					<input type = "illness" name = "inputIllness" id = "inputIllness" class = "form-control" placeholder = "Illness Name" required>
 

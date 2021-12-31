@@ -6,13 +6,13 @@
 	<style>
 
 		body
-        {
+		{
 			padding-top: 0px;
 			padding-bottom: 0px;
 		}
 
 		.form-signin .checkbox
-        {
+        	{
 			font-weight: normal;
 		}
 
@@ -24,6 +24,11 @@
 		}
 
 		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.form-signin select{
 			margin-bottom: 10px;
 			border-radius: 4px;
 		}
@@ -69,10 +74,15 @@
 
 		.form-signin label {
 			display: inline-block;
-        	width: 140px;
-    	}
+        		width: 140px;
+    		}
 
-    	.text-arial {
+    		.formfield * {
+  			vertical-align: middle;
+  			font-size: 16px;
+		}
+
+    		.text-arial {
 			font-family: Arial;
 		}
 
@@ -81,30 +91,63 @@
 <body>
 	<div class = "container">
 		<div class = "header">
+			<img src="/static/Youth.png" alt="logo" style="width:150px;height:150px;">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
-        <form>
-            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
-        </form>
+
+		<form>
+            		<input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        	</form>
+
 		<div class = "jumbotron">
-			<div>
-				<p class = "text-arial">Share Code: {{SC}}</p>
+			<p class = "text-arial">Share Code: {{SC}}</p>
 				<p class = "text-arial">Date: {{date}}</p>
 				<h1 class = "text-arial">Log Book</h1>
 				<form class = "form-signin" action = "#" method = "post">
 					<label for = "inputName" class = "text-arial">Youth's Name</label>
-					<input type = "text" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<input type = "name" name = "inputName" id = "inputName" class = "form-control" placeholder = "Youth's Name"/>
+					<br>
+					<p class = "formfield">
+	  					<label for = "inputEvent" class = "text-arial">Event</label>
+						<textarea name = "inputEvent" id = "inputEvent" class = "text-arial" cols="50" rows="10"placeholder = "Event"></textarea>
+					</p>
 					<br>
 					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
-					<input type = "text" name = "inputBehaviour" id = "inputBehaviour" class = "form-control" placeholder = "Behaviour"/>
+					 <select name="inputBehaviour" id="inputBehaviour" class = "form-control">
+					 	<optgroup label="Negative Behaviour">
+						<option value="Hyperactive">Hyper-active</option>
+	    					<option value="Careless">Careless</option>
+	    					<option value="Undisciplined">Undisciplined</option>
+	    					<option value="Volatile">Volatile</option>
+	    					<option value="Aggressive">Aggressive</option>
+	    					<option value="Stubborn">Stubborn</option>
+	    					<option value="Argumentative">Argumentative</option>
+	    					<option value="Selfish">Selfish</option>
+    					</optgroup>
+    					<optgroup label="Positive Behaviour">
+    						<option value="Polite">Polite</option>
+    						<option value="Caring">Caring</option>
+    						<option value="Selfless">Selfless</option>
+    						<option value="Positive">Positive</option>
+    					</optgroup>
+    					<optgroup label="Concerning Behaviour">
+    						<option value="Anxious">Anxious</option>
+    						<option value="Lazy">Lazy</option>
+    						<option value="Loner">Loner</option>
+    						<option value="Shy">Shy</option>
+    						<option value="Down">Down</option>
+    						<option value="Guarded">Guarded</option>
+    						<option value="Appetite Loss">Loss of Appetite</option>
+    					</optgroup>
+  					</select>
+  					<br>
+  					<p class = "formfield">
+	  					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
+						<textarea name = "inputActions" id = "inputActions" class = "text-arial" cols="50" rows="10"placeholder = "Action(s) Taken"></textarea>
+					</p>
 					<br>
-                    <label for = "inputEvent" class = "text-arial">Event</label>
-					<input type = "text" name = "inputEvent" id = "inputEvent" class = "form-control" placeholder = "Event"/>
-					<br>
-					<label for = "inputActions" class = "text-arial">Action(s) Taken</label>
-					<input type = "text" name = "inputActions" id = "inputActions" class = "form-control" placeholder = "Action(s) Taken" required>
-					<br>
-					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
+
+  					<div class = "center"><input class = "button" type = "submit" value = "Submit"/></div>
 				</form>
 			</div>
 

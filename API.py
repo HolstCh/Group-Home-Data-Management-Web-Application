@@ -38,8 +38,8 @@ class MHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, mentalShareCode):  # insert into three tables to upload MHE (no duplicates possible since unique share code)
-        try:                          # returns JSON format for confirmation of insert queries
+    def post(self, mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
+        try:
             code = mentalShareCode
             data = request.values
             psySIN = data['psySIN']
@@ -75,47 +75,51 @@ class MHE(Resource):
 
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO MENTAL_HEALTH_EVALUATION" \
-                    " (mentalShareCode, psySIN, youthName)" \
-                    "VALUES(%s, %s, %s)"
-            values = (code, psySIN, youthName)
-            cursor.execute(query, values)
-            connection.commit()
-
-            query = "INSERT INTO THERAPY" \
-                    " (sessionID, illness, sessionLength, day, month, year, time, therapeuticMethod, mentalShareCode)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (sessionID, illness, sessLength, day, month, year, time, therapyMethod, code)
-            cursor.execute(query, values)
-            connection.commit()
-
-            query = "INSERT INTO SYMPTOMS" \
-                    "(mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, " \
-                    "symptom5, severity5, symptom6, severity6, symptom7, severity7, symptom8, severity8, " \
-                    "symptom9, severity9, symptom10, severity10)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (
-                code, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5,
-                severity5,
-                symptom6, severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10,
-                severity10)
-            cursor.execute(query, values)
-            connection.commit()
-            if cursor.rowcount == 1:
-                result = jsonify({
-                    "psySIN": psySIN, "youthName": youthName, "sessionID": sessionID, "illness": illness,
-                    "sessionLength": sessLength, "day": day, "month": month, "year": year, "time": time,
-                    "therapeuticMethod": therapyMethod, "symptom": symptom, "severity": severity,
-                    "symptom2": symptom2, "severity2": severity2, "symptom3": symptom3, "severity3": severity3,
-                    "symptom4": symptom4, "severity4": severity4, "symptom5": symptom5, "severity5": severity5,
-                    "symptom6": symptom6, "severity6": severity6, "symptom7": symptom7, "severity7": severity7,
-                    "symptom8": symptom8, "severity8": severity8, "symptom9": symptom9, "severity9": severity9,
-                    "symptom10": symptom10, "severity10": severity10})
-                result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'your log book entry upload has failed'})
+            query = "SELECT mentalShareCode FROM MENTAL_HEALTH_EVALUATION WHERE mentalShareCode = %s"
+            cursor.execute(query, code)
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Failure: the MHE file already exists'})
                 result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO MENTAL_HEALTH_EVALUATION" \
+                        " (mentalShareCode, psySIN, youthName)" \
+                        "VALUES(%s, %s, %s)"
+                values = (code, psySIN, youthName)
+                cursor.execute(query, values)
+                connection.commit()
+
+                query = "INSERT INTO THERAPY" \
+                        " (sessionID, illness, sessionLength, day, month, year, time, therapeuticMethod, mentalShareCode)" \
+                        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = (sessionID, illness, sessLength, day, month, year, time, therapyMethod, code)
+                cursor.execute(query, values)
+                connection.commit()
+
+                query = "INSERT INTO SYMPTOMS" \
+                        "(mentalShareCode, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, " \
+                        "symptom5, severity5, symptom6, severity6, symptom7, severity7, symptom8, severity8, " \
+                        "symptom9, severity9, symptom10, severity10)" \
+                        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = (
+                    code, symptom, severity, symptom2, severity2, symptom3, severity3, symptom4, severity4, symptom5,
+                    severity5,
+                    symptom6, severity6, symptom7, severity7, symptom8, severity8, symptom9, severity9, symptom10,
+                    severity10)
+                cursor.execute(query, values)
+                connection.commit()
+                result = jsonify(
+                    {'status code': 200, 'message': 'Success: MHE was added to MHE, Therapy, and Symptoms tables', "mentalShareCode": code,
+                     "psySIN": psySIN, "youthName": youthName, "sessionID": sessionID, "illness": illness,
+                     "sessionLength": sessLength, "day": day, "month": month, "year": year, "time": time,
+                     "therapeuticMethod": therapyMethod, "symptom": symptom, "severity": severity,
+                     "symptom2": symptom2, "severity2": severity2, "symptom3": symptom3, "severity3": severity3,
+                     "symptom4": symptom4, "severity4": severity4, "symptom5": symptom5, "severity5": severity5,
+                     "symptom6": symptom6, "severity6": severity6, "symptom7": symptom7, "severity7": severity7,
+                     "symptom8": symptom8, "severity8": severity8, "symptom9": symptom9, "severity9": severity9,
+                     "symptom10": symptom10, "severity10": severity10})
+                result.status_code = 200
                 return result
         except Exception as e:
             print(e)
@@ -128,7 +132,8 @@ api.add_resource(MHE, "/MHE/<mentalShareCode>")
 
 
 class PHE(Resource):
-    def get(self, physicalShareCode): # retrieve PHE data in JSON format to then be deserialized in main.py and displayed in HTML table
+    def get(self,
+            physicalShareCode):  # retrieve PHE data in JSON format to then be deserialized in main.py and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -152,8 +157,9 @@ class PHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, physicalShareCode): # insert into two tables to upload PHE (no duplicates possible since unique share code)
-        try:                           # returns JSON format for confirmation of insert queries
+    def post(self,
+             physicalShareCode):  # insert into two tables to upload PHE (no duplicates possible since unique share code)
+        try:  # returns JSON format for confirmation of insert queries
             data = request.values
             code = physicalShareCode
             day = data['day']
@@ -174,34 +180,38 @@ class PHE(Resource):
 
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
-                    " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (
-                code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN,
-                youthName)
-            cursor.execute(query, values)
-            connection.commit()
+            query = "SELECT physicalShareCode FROM PHYSICAL_HEALTH_EVALUATION WHERE physicalShareCode = %s"
+            cursor.execute(query, code)
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Failure: the PHE file already exists'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO PHYSICAL_HEALTH_EVALUATION" \
+                        " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
+                        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = (
+                    code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN,
+                    youthName)
+                cursor.execute(query, values)
+                connection.commit()
 
-            query = "INSERT INTO PRESCRIPTION" \
-                    " (name, dosage, dosesPerDay, illness, physicalShareCode)" \
-                    "VALUES(%s, %s, %s, %s, %s)"
-            values = (drugName, dosage, dosesPerDay, illness, code)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            if cursor.rowcount == 1:
-                result = jsonify({"day": day, "month": month, "year": year, "weight": weight, "height": height,
+                query = "INSERT INTO PRESCRIPTION" \
+                        " (name, dosage, dosesPerDay, illness, physicalShareCode)" \
+                        "VALUES(%s, %s, %s, %s, %s)"
+                values = (drugName, dosage, dosesPerDay, illness, code)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "record inserted.")
+                result = jsonify({"status code": 200, "message": "Success: PHE was added to PHE and Prescription tables",
+                                  "physicalShareCode": code, "day": day, "month": month, "year": year, "weight": weight, "height": height,
                                   "temperature": temperature,
                                   "heartRate": heartRate, "bloodPressure": bloodPressure,
                                   "respiratoryRate": respiratoryRate, "pedSIN": pedSIN,
                                   "youthName": youthName, "name": drugName, "dosage": dosage,
                                   "dosesPerDay": dosesPerDay, "illness": illness})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'your physical health evaluation upload has failed'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -214,7 +224,8 @@ api.add_resource(PHE, "/PHE/<physicalShareCode>")
 
 
 class Log(Resource):
-    def get(self, logShareCode): # retrieve Log data in JSON format to then be deserialized in main.py and displayed in HTML table
+    def get(self,
+            logShareCode):  # retrieve Log data in JSON format to then be deserialized in main.py and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -237,39 +248,42 @@ class Log(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, logShareCode): # insert into one tables to upload Log (no duplicates possible since unique share code)
-        try:                      # returns JSON format for confirmation of insert queries
-            connection = mysql.connect()
-            cursor = connection.cursor()
+    def post(self, logShareCode):  # insert into one tables to upload Log (no duplicates possible since unique share code)
+        try:  # returns JSON format for confirmation of insert queries
             data = request.values
             youthName = data['youthName']
             day = data['day']
             month = data['month']
             year = data['year']
             behaviour = data['behaviour']
-            event = request.form['event']
+            event = data['event']
             actions = data['actionsTaken']
             youthSIN = data['YSIN']
             code = logShareCode
 
-            query = "INSERT INTO LOG_BOOK" \
-                    " (logShareCode, day, month, year, event, behaviour, actionsTaken, YSIN, youthName)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (code, day, month, year, event, behaviour, actions, youthSIN, youthName)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "record inserted.")
-
-            if cursor.rowcount == 1:
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "SELECT logShareCode FROM LOG_BOOK WHERE logShareCode = %s"
+            cursor.execute(query, code)
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Failure: the Log Book file already exists'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO LOG_BOOK" \
+                        " (logShareCode, day, month, year, event, behaviour, actionsTaken, YSIN, youthName)" \
+                        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = (code, day, month, year, event, behaviour, actions, youthSIN, youthName)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "record inserted.")
                 result = jsonify(
-                    {'logShareCode': code, 'day': day, 'month': month, 'year': year, 'event': event,
+                    {'status code': 200, 'message': 'Success: Log Book was added to Log Book table',
+                     'logShareCode': code, 'day': day, 'month': month, 'year': year, 'event': event,
                      'behaviour': behaviour,
                      'actionsTaken': actions, 'YSIN': youthSIN, 'youthName': youthName})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'your log book entry upload has failed'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -282,7 +296,7 @@ api.add_resource(Log, "/Log/<logShareCode>")
 
 
 class AllPhysicalCodes(Resource):
-    def get(self, SIN): # retrieve all PHE share codes in JSON format to be deserialized in main.py and stored in global list
+    def get(self, SIN):  # retrieve all PHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -309,7 +323,8 @@ api.add_resource(AllPhysicalCodes, "/AllPhysicalCodes/<SIN>")
 
 
 class AllLogCodes(Resource):
-    def get(self, SIN): # retrieve all Log share codes in JSON format to be deserialized in main.py and stored in global list
+    def get(self,
+            SIN):  # retrieve all Log share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -336,7 +351,8 @@ api.add_resource(AllLogCodes, "/AllLogCodes/<SIN>")
 
 
 class AllMentalCodes(Resource):
-    def get(self, SIN): # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global list
+    def get(self,
+            SIN):  # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -363,7 +379,8 @@ api.add_resource(AllMentalCodes, "/AllMentalCodes/<SIN>")
 
 
 class OwnedPhysicalCodes(Resource):
-    def get(self, SIN): # retrieve owned PHE share codes in JSON format to be deserialized in main.py and stored in global list
+    def get(self,
+            SIN):  # retrieve owned PHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -390,7 +407,8 @@ api.add_resource(OwnedPhysicalCodes, "/OwnedPhysicalCodes/<SIN>")
 
 
 class OwnedLogCodes(Resource):
-    def get(self, SIN): # retrieve owned Log share codes in JSON format to be deserialized in main.py and stored in global lists
+    def get(self,
+            SIN):  # retrieve owned Log share codes in JSON format to be deserialized in main.py and stored in global lists
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -417,7 +435,7 @@ api.add_resource(OwnedLogCodes, "/OwnedLogCodes/<SIN>")
 
 
 class OwnedMentalCodes(Resource):
-    def get(self, SIN): # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global lists
+    def get(self, SIN):  # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global lists
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -444,27 +462,30 @@ api.add_resource(OwnedMentalCodes, "/OwnedMentalCodes/<SIN>")
 
 
 class SendLogCode(Resource):
-    def post(self, toUser, shareCode): # inserts Log share code to another user's account
-        try:                           # returns JSON format for confirmation of insert queries
+    def post(self, toUser, shareCode):  # inserts Log share code to another user's account
+        try:  # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
-            cursor.execute(query, toUser)
+            cursor.execute(query, (toUser,))
             sin = cursor.fetchone()
 
-            query = "INSERT INTO LOG_CODES (SIN, logCode) VALUES(%s, %s)"
-            values = (sin, shareCode)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            if cursor.rowcount == 1:
-                result = jsonify({'status code': 200, 'message': 'Success: your log code was shared', "SIN": sin,
+            query = "SELECT logCode FROM LOG_CODES WHERE SIN = %s and logCode = %s"
+            cursor.execute(query, (sin, shareCode))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Error: your log code was already shared to the other user'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO LOG_CODES (SIN, logCode) VALUES(%s, %s)"
+                values = (sin, shareCode)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "record inserted.")
+                result = jsonify({'status code': 200, 'message': 'Success: your log code was shared to other user', "SIN": sin,
                                   "logCode": shareCode})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'Error: your log code was not shared'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -477,27 +498,30 @@ api.add_resource(SendLogCode, "/SendLogCode/<toUser>/<shareCode>")
 
 
 class SendPedCode(Resource):
-    def post(self, toUser, shareCode): # inserts PHE share code to another user's account
-        try:                           # returns JSON format for confirmation of insert queries
+    def post(self, toUser, shareCode):  # inserts PHE share code to another user's account
+        try:  # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
-            cursor.execute(query, toUser)
+            cursor.execute(query, (toUser,))
             sin = cursor.fetchone()
 
-            query = "INSERT INTO PHYSICAL_CODES (SIN, physicalCode) VALUES(%s, %s)"
-            values = (sin, shareCode)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            if cursor.rowcount == 1:
+            query = "SELECT physicalCode FROM PHYSICAL_CODES WHERE SIN = %s and physicalCode = %s"
+            cursor.execute(query, (sin, shareCode))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Error: your physical code was already shared to the other user'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO PHYSICAL_CODES (SIN, physicalCode) VALUES(%s, %s)"
+                values = (sin, shareCode)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "record inserted.")
                 result = jsonify({'status code': 200, 'message': 'Success: your physical code was shared', "SIN": sin,
                                   "physicalCode": shareCode})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'Error: your physical code was not shared'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -510,26 +534,29 @@ api.add_resource(SendPedCode, "/SendPedCode/<toUser>/<shareCode>")
 
 
 class SendPsyCode(Resource):
-    def post(self, toUser, shareCode): # inserts MHE share code to another user's account
-        try:                           # returns JSON format for confirmation of insert queries
+    def post(self, toUser, shareCode):  # inserts MHE share code to another user's account
+        try:  # returns JSON format for confirmation of insert queries
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "SELECT SIN FROM HAS WHERE username = %s"
             cursor.execute(query, toUser)
             sin = cursor.fetchone()
 
-            query = "INSERT INTO MENTAL_CODES (SIN, mentalCode) VALUES(%s, %s)"
-            values = (sin, shareCode)
-            cursor.execute(query, values)
-            connection.commit()
-            if cursor.rowcount == 1:
+            query = "SELECT mentalCode FROM MENTAL_CODES WHERE SIN = %s and mentalCode = %s"
+            cursor.execute(query, (sin, shareCode))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify({'status code': 400, 'message': 'Error: your mental code was already shared to the other user'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO MENTAL_CODES (SIN, mentalCode) VALUES(%s, %s)"
+                values = (sin, shareCode)
+                cursor.execute(query, values)
+                connection.commit()
                 result = jsonify({'status code': 200, 'message': 'Success: your mental code was shared', "SIN": sin,
                                   "mentalCode": shareCode})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify({'status code': 400, 'message': 'Error: your mental code was not shared'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -542,8 +569,8 @@ api.add_resource(SendPsyCode, "/SendPsyCode/<toUser>/<shareCode>")
 
 
 class Youth(Resource):
-    def post(self, sin): # inserts into Youth Worker table when creating a new account
-        try:             # returns JSON format for confirmation of insert query
+    def post(self, sin):  # inserts into Youth Worker table when creating a new account
+        try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO YOUTH_WORKER" \
@@ -575,8 +602,8 @@ api.add_resource(Youth, "/Youth/<sin>")
 
 
 class Ped(Resource):
-    def post(self, sin): # inserts into Pediatrician table when creating a new account
-        try:             # returns JSON format for confirmation of insert query
+    def post(self, sin):  # inserts into Pediatrician table when creating a new account
+        try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO PEDIATRICIAN" \
@@ -609,8 +636,8 @@ api.add_resource(Ped, "/Ped/<sin>")
 
 
 class Psy(Resource):
-    def post(self, sin): # inserts into Psychologist table when creating a new account
-        try:             # returns JSON format for confirmation of insert query
+    def post(self, sin):  # inserts into Psychologist table when creating a new account
+        try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
             query = "INSERT INTO PSYCHOLOGIST" \

@@ -527,7 +527,7 @@ def myFilesPed():
             return redirect(url_for("accountPed"))  # back to Ped's main page
         elif share.status_code == 400:
             easygui.msgbox(
-                userName + ', your share code of ' + shareCode + ' was not shared to ' + toUser + ' and has failed.',
+                userName + ', your share code of ' + shareCode + ' has already been shared to ' + toUser + ' so the share has failed.',
                 'Error!')
             physical = [i for i in ownedPhysicalCodes]
             return render_template('myFilesPed.html', ownedPHEs=physical)
@@ -553,7 +553,7 @@ def myFilesYouth():
             return redirect(url_for("accountYouth"))  # back to Youth's main page
         elif share.status_code == 400:
             easygui.msgbox(
-                userName + ', your share code of ' + shareCode + ' has not been shared to ' + toUser + ' and has failed.',
+                userName + ', your share code of ' + shareCode + ' has already been shared to ' + toUser + ' so the share has failed.',
                 'Error!')
             log = [i for i in ownedLogCodes]
             return render_template('myFilesYouth.html', ownedLogs=log)
@@ -579,7 +579,7 @@ def myFilesPsy():
             return redirect(url_for("accountPsy"))  # back to Youth's main page
         elif share.status_code == 400:
             easygui.msgbox(
-                userName + ', your share code of ' + shareCode + ' was not shared to ' + toUser + ' and has failed.',
+                userName + ', your share code of ' + shareCode + ' was already shared to ' + toUser + ' so the share has failed.',
                 'Error!')
             mental = [i for i in ownedMentalCodes]
             return render_template('myFilesPsy.html', ownedMHEs=mental)

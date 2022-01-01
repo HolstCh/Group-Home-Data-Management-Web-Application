@@ -47,7 +47,7 @@ CREATE TABLE `physical_health_evaluation` (
 
 LOCK TABLES `physical_health_evaluation` WRITE;
 /*!40000 ALTER TABLE `physical_health_evaluation` DISABLE KEYS */;
-INSERT INTO `physical_health_evaluation` VALUES (5,'30','12',2021,62,'1.7','37.1',80,'120/78',14,223456789,'Melissa'),(6,'30','12',2021,71,'1.6','37.2',92,'119/79',16,223456789,'Alex');
+INSERT INTO `physical_health_evaluation` VALUES (5,'30','12',2021,62,'1.7','37.1',80,'120/78',14,223456789,'Melissa'),(6,'30','12',2021,71,'1.6','37.2',92,'119/79',16,223456789,'Alex'),(9,'4','10',2021,68,'1.5','37.3',76,'120/79',15,223456789,'Luke');
 /*!40000 ALTER TABLE `physical_health_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:36
+-- Dump completed on 2021-12-31 23:45:59

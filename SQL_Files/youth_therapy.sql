@@ -44,7 +44,7 @@ CREATE TABLE `therapy` (
 
 LOCK TABLES `therapy` WRITE;
 /*!40000 ALTER TABLE `therapy` DISABLE KEYS */;
-INSERT INTO `therapy` VALUES (2,'Bipolar Disorder','1','30','12',2021,'16:00','Behavioral Therapy',2),(4,'Attention Deficit Hyperactivity Disorder','2','30','12',2021,'19:30','Cognitive Therapy',4);
+INSERT INTO `therapy` VALUES (2,'Bipolar Disorder','1','30','12',2021,'16:00','Behavioral Therapy',2),(4,'Attention Deficit Hyperactivity Disorder','2','30','12',2021,'19:30','Cognitive Therapy',4),(7,'Generalized Anxiety Disorder','1','28','11',2021,'15:30','Psychoanalysis Therapy',7),(8,'Major Depressive Disorder','2','6','9',2021,'11:30','Humanistic Therapy',8);
 /*!40000 ALTER TABLE `therapy` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:40
+-- Dump completed on 2021-12-31 23:46:02

@@ -40,7 +40,7 @@ CREATE TABLE `prescription` (
 
 LOCK TABLES `prescription` WRITE;
 /*!40000 ALTER TABLE `prescription` DISABLE KEYS */;
-INSERT INTO `prescription` VALUES ('Adderall','10',1,'ADHD',6),('Lithopid','600',2,'Bipolar Disorder',5);
+INSERT INTO `prescription` VALUES ('Adderall','10',1,'ADHD',6),('Effexor','75',1,'Generalized Anxiety Disorder',9),('Lithopid','600',2,'Bipolar Disorder',5);
 /*!40000 ALTER TABLE `prescription` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:36
+-- Dump completed on 2021-12-31 23:46:00

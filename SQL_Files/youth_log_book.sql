@@ -44,7 +44,7 @@ CREATE TABLE `log_book` (
 
 LOCK TABLES `log_book` WRITE;
 /*!40000 ALTER TABLE `log_book` DISABLE KEYS */;
-INSERT INTO `log_book` VALUES (1,'28','12',2021,'I had asked Alex multiple times to do his homework. He responded with a temper tantrum and started throwing his toys at me.','Aggressive','I had removed all toys from the area and told him that he could not play with his toys until he had completed all of his homework.',123456789,'Alex'),(3,'30','12',2021,'Melissa displayed proper etiquette when we had supper last night. She has made substantial progress considering how rude she was in the past.','Polite','I rewarded her for learning manners at the supper table by giving her extra dessert. She did not expect the reward and seemed thankful.',123456789,'Melissa');
+INSERT INTO `log_book` VALUES (1,'28','12',2021,'I had asked Alex multiple times to do his homework. He responded with a temper tantrum and started throwing his toys at me.','Aggressive','I had removed all toys from the area and told him that he could not play with his toys until he had completed all of his homework.',123456789,'Alex'),(3,'30','12',2021,'Melissa displayed proper etiquette when we had supper last night. She has made substantial progress considering how rude she was in the past.','Polite','I rewarded her for learning manners at the supper table by giving her extra dessert. She did not expect the reward and seemed thankful.',123456789,'Melissa'),(10,'8','7',2021,'Luke seemed worried about seeing his father tonight. He was difficult to communicate with and neglected me all day.','Anxious','I tried to help Luke relax. I allowed him to play video games for an extra hour to get his mind off of seeing his father tonight.',123456789,'Luke');
 /*!40000 ALTER TABLE `log_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:37
+-- Dump completed on 2021-12-31 23:46:00

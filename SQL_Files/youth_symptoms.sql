@@ -55,7 +55,7 @@ CREATE TABLE `symptoms` (
 
 LOCK TABLES `symptoms` WRITE;
 /*!40000 ALTER TABLE `symptoms` DISABLE KEYS */;
-INSERT INTO `symptoms` VALUES (2,'Depression',9,'Anxiety',8,'Lethargy',7,'Excessive Fear',5,'Excessive Worrying',9,'Extreme Mood Changes',10,'Trouble Sleeping',7,'Trouble Concentrating',4,'Loss of Interest',3,'Appetite',1),(4,'Depression',4,'Anxiety',6,'Lethargy',2,'Excessive Fear',1,'Excessive Worrying',2,'Extreme Mood Changes',6,'Trouble Sleeping',9,'Trouble Concentrating',10,'Loss of Interest',4,'Appetite',3);
+INSERT INTO `symptoms` VALUES (2,'Depression',9,'Anxiety',8,'Lethargy',7,'Excessive Fear',5,'Excessive Worrying',9,'Extreme Mood Changes',10,'Trouble Sleeping',7,'Trouble Concentrating',4,'Loss of Interest',3,'Appetite',1),(4,'Depression',4,'Anxiety',6,'Lethargy',2,'Excessive Fear',1,'Excessive Worrying',2,'Extreme Mood Changes',6,'Trouble Sleeping',9,'Trouble Concentrating',10,'Loss of Interest',4,'Appetite',3),(7,'Depression',7,'Anxiety',10,'Lethargy',7,'Excessive Fear',6,'Excessive Worrying',9,'Extreme Mood Changes',8,'Trouble Sleeping',7,'Trouble Concentrating',4,'Loss of Interest',3,'Appetite',4),(8,'Depression',10,'Anxiety',7,'Lethargy',10,'Excessive Fear',4,'Excessive Worrying',8,'Extreme Mood Changes',8,'Trouble Sleeping',7,'Trouble Concentrating',7,'Loss of Interest',9,'Appetite',8);
 /*!40000 ALTER TABLE `symptoms` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -68,4 +68,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:39
+-- Dump completed on 2021-12-31 23:46:02

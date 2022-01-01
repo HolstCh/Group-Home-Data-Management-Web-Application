@@ -38,7 +38,7 @@ CREATE TABLE `mental_health_evaluation` (
 
 LOCK TABLES `mental_health_evaluation` WRITE;
 /*!40000 ALTER TABLE `mental_health_evaluation` DISABLE KEYS */;
-INSERT INTO `mental_health_evaluation` VALUES (2,323456789,'Melissa'),(4,323456789,'Alex');
+INSERT INTO `mental_health_evaluation` VALUES (2,323456789,'Melissa'),(4,323456789,'Alex'),(7,323456789,'Luke'),(8,323456789,'Ashley');
 /*!40000 ALTER TABLE `mental_health_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 16:49:37
+-- Dump completed on 2021-12-31 23:46:00

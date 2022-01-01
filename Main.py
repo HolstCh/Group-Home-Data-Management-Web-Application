@@ -23,14 +23,13 @@ userSIN = 0  # user's sin is saved globally when logging in
 userName = ""  # user's username is saved globally when logging in
 userProfession = ""  # user's profession is saved globally when logging in
 
-
 @app.route("/")
 def main():
-    return redirect(url_for("home"))
+    return redirect(url_for("home", message=" "))
 
 
-@app.route("/home", methods=["POST", "GET"])  # login URL page
-def home():
+@app.route("/home/<message>", methods=["POST", "GET"])  # login URL page
+def home(message):
     sharedPhysicalCodes.clear()
     sharedLogCodes.clear()
     sharedMentalCodes.clear()
@@ -42,7 +41,7 @@ def home():
         password = request.form["inputPassword"]
         return redirect(url_for("verifyProfession", username=user, password=password))
     else:
-        return render_template('designApp.html')
+        return render_template('designApp.html', message=message)
 
 
 @app.route("/accountYouth")  # user Youth Worker's main page
@@ -191,7 +190,7 @@ def verifyAccount(username, password, profession):
         print(userProfession)
         if not sin:
             print('Error: no account')
-            return redirect(url_for("home"))
+            return redirect(url_for("home", message = "Username or password is incorrect!"))
         else:
             return redirect(url_for("loadPhysicalCodes"))
     except Exception as e:
@@ -212,7 +211,7 @@ def verifyProfession(username, password):
         cursor.execute(query, info)
         profType = cursor.fetchone()
         if not profType:
-            return redirect(url_for("home"))
+            return redirect(url_for("home", message = "Username or password is incorrect!"))
         else:
             return redirect(url_for("verifyAccount", username=username, password=password, profession=profType[0]))
     except Exception as e:
@@ -580,7 +579,7 @@ def moreNewAccount(user, password,
                 easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
                 result = jsonify("New Account Created")
                 result.status_code = 200
-                return redirect(url_for("home"))  # go back to login page
+                return redirect(url_for("home", message = " "))  # go back to login page
             except Exception as e:
                 print(e)
             finally:

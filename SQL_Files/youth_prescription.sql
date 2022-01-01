@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `prescription`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `prescription` (
   `name` varchar(255) NOT NULL,
-  `dosage` int DEFAULT NULL,
+  `dosage` varchar(255) DEFAULT NULL,
   `dosesPerDay` int DEFAULT NULL,
   `illness` varchar(255) DEFAULT NULL,
   `physicalShareCode` int DEFAULT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `prescription` (
 
 LOCK TABLES `prescription` WRITE;
 /*!40000 ALTER TABLE `prescription` DISABLE KEYS */;
-INSERT INTO `prescription` VALUES ('Adderall',10,1,'ADHD',6),('Lithopid',600,2,'Bipolar Disorder',5);
+INSERT INTO `prescription` VALUES ('Adderall','10',1,'ADHD',6),('Lithopid','600',2,'Bipolar Disorder',5);
 /*!40000 ALTER TABLE `prescription` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-30 20:40:07
+-- Dump completed on 2021-12-31 16:49:36

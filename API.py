@@ -11,7 +11,8 @@ api = Api(app)
 
 
 class MHE(Resource):
-    def get(self, mentalShareCode):  # retrieve MHE data in JSON format to then be deserialized and displayed in HTML table
+    def get(self,
+            mentalShareCode):  # retrieve MHE data in JSON format to then be deserialized and displayed in HTML table
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -38,7 +39,8 @@ class MHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
+    def post(self,
+             mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
         try:
             code = mentalShareCode
             data = request.values
@@ -110,7 +112,8 @@ class MHE(Resource):
                 cursor.execute(query, values)
                 connection.commit()
                 result = jsonify(
-                    {'status code': 200, 'message': 'Success: MHE was added to MHE, Therapy, and Symptoms tables', "mentalShareCode": code,
+                    {'status code': 200, 'message': 'Success: MHE was added to MHE, Therapy, and Symptoms tables',
+                     "mentalShareCode": code,
                      "psySIN": psySIN, "youthName": youthName, "sessionID": sessionID, "illness": illness,
                      "sessionLength": sessLength, "day": day, "month": month, "year": year, "time": time,
                      "therapeuticMethod": therapyMethod, "symptom": symptom, "severity": severity,
@@ -192,7 +195,8 @@ class PHE(Resource):
                         " (physicalShareCode, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN, youthName)" \
                         "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 values = (
-                    code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate, pedSIN,
+                    code, day, month, year, weight, height, temperature, heartRate, bloodPressure, respiratoryRate,
+                    pedSIN,
                     youthName)
                 cursor.execute(query, values)
                 connection.commit()
@@ -204,13 +208,15 @@ class PHE(Resource):
                 cursor.execute(query, values)
                 connection.commit()
                 print(cursor.rowcount, "record inserted.")
-                result = jsonify({"status code": 200, "message": "Success: PHE was added to PHE and Prescription tables",
-                                  "physicalShareCode": code, "day": day, "month": month, "year": year, "weight": weight, "height": height,
-                                  "temperature": temperature,
-                                  "heartRate": heartRate, "bloodPressure": bloodPressure,
-                                  "respiratoryRate": respiratoryRate, "pedSIN": pedSIN,
-                                  "youthName": youthName, "name": drugName, "dosage": dosage,
-                                  "dosesPerDay": dosesPerDay, "illness": illness})
+                result = jsonify(
+                    {"status code": 200, "message": "Success: PHE was added to PHE and Prescription tables",
+                     "physicalShareCode": code, "day": day, "month": month, "year": year, "weight": weight,
+                     "height": height,
+                     "temperature": temperature,
+                     "heartRate": heartRate, "bloodPressure": bloodPressure,
+                     "respiratoryRate": respiratoryRate, "pedSIN": pedSIN,
+                     "youthName": youthName, "name": drugName, "dosage": dosage,
+                     "dosesPerDay": dosesPerDay, "illness": illness})
                 result.status_code = 200
                 return result
         except Exception as e:
@@ -248,7 +254,8 @@ class Log(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, logShareCode):  # insert into one tables to upload Log (no duplicates possible since unique share code)
+    def post(self,
+             logShareCode):  # insert into one tables to upload Log (no duplicates possible since unique share code)
         try:  # returns JSON format for confirmation of insert queries
             data = request.values
             youthName = data['youthName']
@@ -296,7 +303,8 @@ api.add_resource(Log, "/Log/<logShareCode>")
 
 
 class AllPhysicalCodes(Resource):
-    def get(self, SIN):  # retrieve all PHE share codes in JSON format to be deserialized in main.py and stored in global list
+    def get(self,
+            SIN):  # retrieve all PHE share codes in JSON format to be deserialized in main.py and stored in global list
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -435,7 +443,8 @@ api.add_resource(OwnedLogCodes, "/OwnedLogCodes/<SIN>")
 
 
 class OwnedMentalCodes(Resource):
-    def get(self, SIN):  # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global lists
+    def get(self,
+            SIN):  # retrieve all MHE share codes in JSON format to be deserialized in main.py and stored in global lists
         try:
             connection = mysql.connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -474,7 +483,8 @@ class SendLogCode(Resource):
             cursor.execute(query, (sin, shareCode))
             doesExist = cursor.fetchone()
             if doesExist:
-                result = jsonify({'status code': 400, 'message': 'Error: your log code was already shared to the other user'})
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: your log code was already shared to the other user'})
                 result.status_code = 400
                 return result
             else:
@@ -483,8 +493,9 @@ class SendLogCode(Resource):
                 cursor.execute(query, values)
                 connection.commit()
                 print(cursor.rowcount, "record inserted.")
-                result = jsonify({'status code': 200, 'message': 'Success: your log code was shared to other user', "SIN": sin,
-                                  "logCode": shareCode})
+                result = jsonify(
+                    {'status code': 200, 'message': 'Success: your log code was shared to other user', "SIN": sin,
+                     "logCode": shareCode})
                 result.status_code = 200
                 return result
         except Exception as e:
@@ -510,7 +521,8 @@ class SendPedCode(Resource):
             cursor.execute(query, (sin, shareCode))
             doesExist = cursor.fetchone()
             if doesExist:
-                result = jsonify({'status code': 400, 'message': 'Error: your physical code was already shared to the other user'})
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: your physical code was already shared to the other user'})
                 result.status_code = 400
                 return result
             else:
@@ -546,7 +558,8 @@ class SendPsyCode(Resource):
             cursor.execute(query, (sin, shareCode))
             doesExist = cursor.fetchone()
             if doesExist:
-                result = jsonify({'status code': 400, 'message': 'Error: your mental code was already shared to the other user'})
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: your mental code was already shared to the other user'})
                 result.status_code = 400
                 return result
             else:
@@ -566,6 +579,50 @@ class SendPsyCode(Resource):
 
 
 api.add_resource(SendPsyCode, "/SendPsyCode/<toUser>/<shareCode>")
+
+
+class Professional(Resource): # checks if account exists. If not, then insert into Professional, Has, and Account tables
+    def post(self):
+        try:
+            data = request.values
+            sin = data['SIN']
+            city = data['city']
+            fName = data['firstName']
+            midInitial = data['middleInitial']
+            lastName = data['lastName']
+            phoneNum = data['phoneNumber']
+
+            connection = mysql.connect()
+            cursor = connection.cursor()
+            query = "SELECT SIN FROM PROFESSIONAL WHERE SIN = %s"
+            cursor.execute(query, (sin,))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: An account already exists with that SIN'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO PROFESSIONAL" \
+                        " (SIN, city, firstName, middleInitial, lastName, phoneNumber)" \
+                        "VALUES(%s, %s, %s, %s, %s, %s)"
+                values = (sin, city, fName, midInitial, lastName, phoneNum)
+                cursor.execute(query, values)
+                connection.commit()
+                result = jsonify(
+                    {'status code': 200, 'message': 'Success: Professional was added to the Professional table',
+                     'SIN': sin, 'city': city, 'firstName': fName, 'middleInitial': midInitial, 'lastName': lastName,
+                     'phoneNumber': phoneNum})
+                result.status_code = 200
+                return result
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            connection.close()
+
+
+api.add_resource(Professional, "/Professional")
 
 
 class Youth(Resource):

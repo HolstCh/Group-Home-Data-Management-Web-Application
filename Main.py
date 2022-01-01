@@ -45,79 +45,6 @@ def home():
         return render_template('designApp.html')
 
 
-@app.route("/newAccount", methods=["POST", "GET"])  # first sign up page for new account
-def newAccount():
-    if request.method == 'POST':
-        user = request.form["inputUsername"]
-        password = request.form["inputPassword"]
-        profession = request.form["inputProfession"]
-        return redirect(
-            url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
-    else:
-        return render_template('designNew.html')
-
-
-@app.route("/moreNewAccount/<user>/<password>/<profession>", methods=["POST", "GET"])
-def moreNewAccount(user, password, profession):  # second sign up page for new account
-    if request.method == 'POST':
-        # values to insert into Professional (sin as well):
-        city = request.form["city"]
-        fName = request.form["fName"]
-        midInitial = request.form["mid"]
-        lastName = request.form["lName"]
-        phoneNum = request.form["phone"]
-
-        # values to insert into Account (user & password as well):
-        professionType = profession
-
-        # values to insert into Has (user as well):
-        sin = request.form["sin"]
-
-        try:
-            connection = mysql.connect()
-            cursor = connection.cursor()
-            query = "INSERT INTO PROFESSIONAL" \
-                    " (SIN, city, firstName, middleInitial, lastName, phoneNumber)" \
-                    "VALUES(%s, %s, %s, %s, %s, %s)"
-            values = (sin, city, fName, midInitial, lastName, phoneNum)
-            cursor.execute(query, values)
-            connection.commit()
-
-            query = "INSERT INTO ACCOUNT" \
-                    " (username, password, professionName)" \
-                    "VALUES(%s, %s, %s)"
-            values = (user, password, professionType)
-            cursor.execute(query, values)
-            connection.commit()
-
-            query = "INSERT INTO HAS" \
-                    " (SIN, username)" \
-                    "VALUES(%s, %s)"
-            values = (sin, user)
-            cursor.execute(query, values)
-            connection.commit()
-
-            if professionType == "Youth Worker":
-                post(BASE + sin)
-            elif professionType == "Pediatrician":
-                post(BASE + sin)
-            elif professionType == "Psychologist":
-                post(BASE + sin)
-
-            print(cursor.rowcount, "record inserted.")
-            easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
-            result = jsonify("New Account Created")
-            result.status_code = 200
-            return redirect(url_for("home"))  # go back to login page
-        except Exception as e:
-            print(e)
-        finally:
-            cursor.close()
-            connection.close()
-    else:
-        return render_template('moreDesignNew.html', user=user)
-
-
 @app.route("/accountYouth")  # user Youth Worker's main page
 def accountYouth():
     return render_template('designAccYouth.html', usr=userName, profession=userProfession)
@@ -586,6 +513,81 @@ def myFilesPsy():
     else:
         mental = [i for i in ownedMentalCodes]
         return render_template('myFilesPsy.html', ownedMHEs=mental)
+
+
+@app.route("/newAccount", methods=["POST", "GET"])  # first sign up page for new account
+def newAccount():
+    if request.method == 'POST':
+        user = request.form["inputUsername"]
+        password = request.form["inputPassword"]
+        profession = request.form["inputProfession"]
+        return redirect(
+            url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
+    else:
+        return render_template('designNew.html')
+
+
+@app.route("/moreNewAccount/<user>/<password>/<profession>", methods=["POST", "GET"])
+def moreNewAccount(user, password,
+                   profession):  # second sign up page for new account: inserts into Professional, Has, and Account tables
+    if request.method == 'POST':
+        # values to insert into Professional (sin as well):
+        city = request.form["city"]
+        fName = request.form["fName"]
+        midInitial = request.form["mid"]
+        lastName = request.form["lName"]
+        phoneNum = request.form["phone"]
+
+        # values to insert into Account (user & password as well):
+        professionType = profession
+
+        # values to insert into Has (user as well):
+        sin = request.form["sin"]
+
+        data = {"SIN": sin, "city": city, "firstName": fName, "middleInitial": midInitial, "lastName": lastName,
+                "phoneNumber": phoneNum}
+        newUser = post(BASE + "Professional", data=data)
+        if newUser.status_code == 400:
+            easygui.msgbox(user + ', the ' + professionType + ' account with the SIN of ' + sin + ' already exists',
+                           'Error!')
+            return render_template('moreDesignNew.html', user=user)
+        elif newUser.status_code == 200:
+            try:
+                connection = mysql.connect()
+                cursor = connection.cursor()
+                query = "INSERT INTO ACCOUNT" \
+                        " (username, password, professionName)" \
+                        "VALUES(%s, %s, %s)"
+                values = (user, password, professionType)
+                cursor.execute(query, values)
+                connection.commit()
+
+                query = "INSERT INTO HAS" \
+                        " (SIN, username)" \
+                        "VALUES(%s, %s)"
+                values = (sin, user)
+                cursor.execute(query, values)
+                connection.commit()
+
+                if professionType == "Youth Worker":
+                    post(BASE + sin)
+                elif professionType == "Pediatrician":
+                    post(BASE + sin)
+                elif professionType == "Psychologist":
+                    post(BASE + sin)
+
+                print(cursor.rowcount, "record inserted.")
+                easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
+                result = jsonify("New Account Created")
+                result.status_code = 200
+                return redirect(url_for("home"))  # go back to login page
+            except Exception as e:
+                print(e)
+            finally:
+                cursor.close()
+                connection.close()
+    else:
+        return render_template('moreDesignNew.html', user=user)
 
 
 if __name__ == "__main__":

@@ -85,6 +85,15 @@
     		.text-arial {
 			font-family: Arial;
 		}
+                        input[type=button] {
+              background-color: #4678A5;
+              border: none;
+              color: white;
+              padding: 16px 32px;
+              text-decoration: none;
+              margin: 4px 2px;
+              cursor: pointer;
+            }
 
 	</style>
 </head>
@@ -94,10 +103,9 @@
 			<img src="/static/Youth.png" alt="logo" style="width:150px;height:150px;">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
-
-		<form>
-            		<input type="button" value="Go Back to Your Main Page" onclick="history.back()">
-        	</form>
+        <form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
 
 		<div class = "jumbotron">
 			<p class = "text-arial">Share Code: {{SC}}</p>

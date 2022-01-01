@@ -29,9 +29,9 @@ CREATE TABLE `physical_health_evaluation` (
   `year` int DEFAULT NULL,
   `weight` int DEFAULT NULL,
   `height` varchar(255) DEFAULT NULL,
-  `temperature` int DEFAULT NULL,
+  `temperature` varchar(255) DEFAULT NULL,
   `heartRate` int DEFAULT NULL,
-  `bloodPressure` int DEFAULT NULL,
+  `bloodPressure` varchar(255) DEFAULT NULL,
   `respiratoryRate` int DEFAULT NULL,
   `pedSIN` int DEFAULT NULL,
   `youthName` varchar(256) DEFAULT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `physical_health_evaluation` (
 
 LOCK TABLES `physical_health_evaluation` WRITE;
 /*!40000 ALTER TABLE `physical_health_evaluation` DISABLE KEYS */;
-INSERT INTO `physical_health_evaluation` VALUES (5,'21','12',2021,1,'1',1,1,1,1,323456789,NULL),(6,'21','12',2021,3,'3',3,3,3,3,323456789,NULL),(7,'21','12',2021,4,'4',4,4,4,4,323456789,'blah'),(8,'21','12',2021,8,'8',8,8,8,8,323456789,'8'),(9,'21','12',2021,9,'9',9,9,9,9,323456789,'9'),(13,'23','12',2021,7,'7',7,7,7,7,323456789,'7'),(14,'23','12',2021,20,'20',20,20,20,20,323456789,'20'),(20,'23','12',2021,100,'100',105,105,105,105,323456789,'Q'),(21,'23','12',2021,100,'100',105,105,105,105,323456789,'Q'),(500,'Tuesday','October',1999,100,'6\'5',100,100,100,100,323456789,NULL);
+INSERT INTO `physical_health_evaluation` VALUES (5,'30','12',2021,62,'1.7','37.1',80,'120/78',14,223456789,'Melissa'),(6,'30','12',2021,71,'1.6','37.2',92,'119/79',16,223456789,'Alex'),(9,'4','10',2021,68,'1.5','37.3',76,'120/79',15,223456789,'Luke');
 /*!40000 ALTER TABLE `physical_health_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-23 14:52:30
+-- Dump completed on 2021-12-31 23:45:59

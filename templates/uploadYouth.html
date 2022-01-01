@@ -5,7 +5,7 @@
 	<title>New Log</title>
 	<style>
 
-		body 
+		body
 		{
 			padding-top: 0px;
 			padding-bottom: 0px;
@@ -85,6 +85,15 @@
     		.text-arial {
 			font-family: Arial;
 		}
+                        input[type=button] {
+              background-color: #4678A5;
+              border: none;
+              color: white;
+              padding: 16px 32px;
+              text-decoration: none;
+              margin: 4px 2px;
+              cursor: pointer;
+            }
 
 	</style>
 </head>
@@ -94,10 +103,9 @@
 			<img src="/static/Youth.png" alt="logo" style="width:150px;height:150px;">
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
-
-		<form>
-            		<input type="button" value="Go Back to Your Main Page" onclick="history.back()">
-        	</form>
+        <form>
+            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+        </form>
 
 		<div class = "jumbotron">
 			<p class = "text-arial">Share Code: {{SC}}</p>
@@ -115,29 +123,28 @@
 					<label for = "inputBehaviour" class = "text-arial">Behaviour</label>
 					 <select name="inputBehaviour" id="inputBehaviour" class = "form-control">
 					 	<optgroup label="Negative Behaviour">
-						<option value="hyperactive">Hyper-active</option>
-	    					<option value="careless">Careless</option>
-	    					<option value="undisciplined">Undisciplined</option>
-	    					<option value="volatile">Volatile</option>
-	    					<option value="aggressive">Aggressive</option>
-	    					<option value="stubborn">Stubborn</option>
-	    					<option value="argumentative">Argumentative</option>
-	    					<option value="selfish">Selfish</option>
+						<option value="Hyperactive">Hyper-active</option>
+	    					<option value="Careless">Careless</option>
+	    					<option value="Undisciplined">Undisciplined</option>
+	    					<option value="Volatile">Volatile</option>
+	    					<option value="Aggressive">Aggressive</option>
+	    					<option value="Stubborn">Stubborn</option>
+	    					<option value="Argumentative">Argumentative</option>
+	    					<option value="Selfish">Selfish</option>
     					</optgroup>
     					<optgroup label="Positive Behaviour">
-    						<option value="polite">Polite</option>
-    						<option value="caring">Caring</option>
-    						<option value="selfless">Selfless</option>
-    						<option value="positive">Positive</option>
+    						<option value="Polite">Polite</option>
+    						<option value="Caring">Caring</option>
+    						<option value="Selfless">Selfless</option>
+    						<option value="Positive">Positive</option>
     					</optgroup>
     					<optgroup label="Concerning Behaviour">
-    						<option value="anxious">Anxious</option>
-    						<option value="lazy">Lazy</option>
-    						<option value="loner">Loner</option>
-    						<option value="shy">Shy</option>
-    						<option value="down">Down</option>
-    						<option value="guarded">Guarded</option>
-    						<option value="appetiteloss">Loss of Appetite</option>
+    						<option value="Anxious">Anxious</option>
+    						<option value="Lethargic">Lazy</option>
+    						<option value="Shy">Shy</option>
+    						<option value="Depressed">Down</option>
+    						<option value="Guarded">Guarded</option>
+    						<option value="Appetite Loss">Loss of Appetite</option>
     					</optgroup>
   					</select>
   					<br>

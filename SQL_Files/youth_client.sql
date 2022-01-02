@@ -30,6 +30,11 @@ CREATE TABLE `client` (
   `firstName` varchar(100) DEFAULT NULL,
   `middleInitial` varchar(1) DEFAULT NULL,
   `lastName` varchar(100) DEFAULT NULL,
+  `groupHomeStreet` varchar(255) DEFAULT NULL,
+  `groupHomeCity` varchar(255) DEFAULT NULL,
+  `groupHomePostal` varchar(255) DEFAULT NULL,
+  `groupHomeCountry` varchar(255) DEFAULT NULL,
+  `groupHomeProvince` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`clientID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,6 +45,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (1,'Blue','Female',16,'Melissa','D','Trider','4867 Bay Street','Toronto','M5J 2R8','Canada','Ontario'),(2,'Brown','Female',14,'Ashley','K','Johnson','3877 Brand Road','Saskatoon','S7K 1W8','Canada','Saskatchewan'),(3,'Green','Male',15,'Alex','L','Reid','1804 184th Street','Edmonton','T5J 2R4','Canada','Alberta'),(4,'Blue','Male',14,'Luke','K','Page','941 Blanshard Street','Victoria','V8W 2H9','Canada','British Columbia');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 23:46:00
+-- Dump completed on 2022-01-02  0:42:32

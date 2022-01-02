@@ -40,6 +40,7 @@ CREATE TABLE `family_member` (
 
 LOCK TABLES `family_member` WRITE;
 /*!40000 ALTER TABLE `family_member` DISABLE KEYS */;
+INSERT INTO `family_member` VALUES (1,'Betty','Trider','780-962-1329','Mother','Toronto'),(1,'George','Trider','780-968-7167','Father','Toronto'),(2,'Betty','Johnson','780-960-4530','Mother','Saskatoon'),(2,'Howard','Johnson','780-968-1117','Father','Saskatoon'),(3,'Laura','Reid','780-964-2330','Mother','Edmonton'),(3,'Richard','Reid','780-965-2287','Father','Edmonton'),(4,'Jenaya','Page','780-962-1090','Mother','Victoria'),(4,'Ryan','Page','780-960-1567','Father','Victoria');
 /*!40000 ALTER TABLE `family_member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31 23:46:01
+-- Dump completed on 2022-01-02  0:42:34

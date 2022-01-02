@@ -39,8 +39,7 @@ class MHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self,
-             mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
+    def post(self, mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
         try:
             code = mentalShareCode
             data = request.values
@@ -630,23 +629,26 @@ class Youth(Resource):
         try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO YOUTH_WORKER" \
-                    " (SIN, certificate)" \
-                    "VALUES(%s, %s)"
-            certificate = "Youth Care Worker Certificate"
-            values = (sin, certificate)
-            cursor.execute(query, values)
-            connection.commit()
-            if cursor.rowcount == 1:
+            query = "SELECT SIN FROM YOUTH_WORKER WHERE SIN = %s"
+            cursor.execute(query, (sin,))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: A Youth Worker account already exists with that SIN'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO YOUTH_WORKER" \
+                        " (SIN, certificate)" \
+                        "VALUES(%s, %s)"
+                certificate = "Youth Care Worker Certificate"
+                values = (sin, certificate)
+                cursor.execute(query, values)
+                connection.commit()
                 result = jsonify(
                     {'status code': 200, 'message': 'Success: Youth Worker was added to the Youth Worker table',
                      "SIN": sin, "certificate": certificate})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify(
-                    {'status code': 400, 'message': 'Failure: Youth Worker was not added to the Youth Worker table'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -663,24 +665,27 @@ class Ped(Resource):
         try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO PEDIATRICIAN" \
-                    " (SIN, degree)" \
-                    "VALUES(%s, %s)"
-            degree = "Doctor of Medicine"
-            values = (sin, degree)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "Pediatrician Record Inserted.")
-            if cursor.rowcount == 1:
+            query = "SELECT SIN FROM PEDIATRICIAN WHERE SIN = %s"
+            cursor.execute(query, (sin,))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: A Pediatrician account already exists with that SIN'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO PEDIATRICIAN" \
+                        " (SIN, degree)" \
+                        "VALUES(%s, %s)"
+                degree = "Doctor of Medicine"
+                values = (sin, degree)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "Pediatrician Record Inserted.")
                 result = jsonify(
                     {'status code': 200, 'message': 'Success: Pediatrician was added to the Pediatrician table',
                      "SIN": sin, "degree": degree})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify(
-                    {'status code': 400, 'message': 'Failure: Pediatrician was not added to the Pediatrician table'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)
@@ -697,24 +702,27 @@ class Psy(Resource):
         try:  # returns JSON format for confirmation of insert query
             connection = mysql.connect()
             cursor = connection.cursor()
-            query = "INSERT INTO PSYCHOLOGIST" \
-                    " (SIN, degree)" \
-                    "VALUES(%s, %s)"
-            degree = "Ph.D in Psychology"
-            values = (sin, degree)
-            cursor.execute(query, values)
-            connection.commit()
-            print(cursor.rowcount, "Psychologist Record Inserted.")
-            if cursor.rowcount == 1:
+            query = "SELECT SIN FROM PSYCHOLOGIST WHERE SIN = %s"
+            cursor.execute(query, (sin,))
+            doesExist = cursor.fetchone()
+            if doesExist:
+                result = jsonify(
+                    {'status code': 400, 'message': 'Error: A Psychologist account already exists with that SIN'})
+                result.status_code = 400
+                return result
+            else:
+                query = "INSERT INTO PSYCHOLOGIST" \
+                        " (SIN, degree)" \
+                        "VALUES(%s, %s)"
+                degree = "Ph.D in Psychology"
+                values = (sin, degree)
+                cursor.execute(query, values)
+                connection.commit()
+                print(cursor.rowcount, "Psychologist Record Inserted.")
                 result = jsonify(
                     {'status code': 200, 'message': 'Success: Psychologist was added to the Psychologist table',
                      "SIN": sin, "degree": degree})
                 result.status_code = 200
-                return result
-            elif cursor.rowcount == 0:
-                result = jsonify(
-                    {'status code': 400, 'message': 'Failure: Psychologist was not added to the Psychologist table'})
-                result.status_code = 400
                 return result
         except Exception as e:
             print(e)

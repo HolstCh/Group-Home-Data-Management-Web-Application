@@ -39,7 +39,8 @@ class MHE(Resource):
             cursor.close()
             connection.close()
 
-    def post(self, mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
+    def post(self,
+             mentalShareCode):  # insert into three tables to upload MHE and returns JSON format for confirmation of insert queries
         try:
             code = mentalShareCode
             data = request.values
@@ -580,7 +581,8 @@ class SendPsyCode(Resource):
 api.add_resource(SendPsyCode, "/SendPsyCode/<toUser>/<shareCode>")
 
 
-class Professional(Resource): # checks if account exists. If not, then insert into Professional, Has, and Account tables
+class Professional(
+    Resource):  # checks if account exists. If not, then insert into Professional, Has, and Account tables
     def post(self):
         try:
             data = request.values
@@ -732,3 +734,56 @@ class Psy(Resource):
 
 
 api.add_resource(Psy, "/Psy/<sin>")
+
+
+class Client(Resource):  # for viewing client information (youth name in all of the documents)
+    def get(self, name):
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+            query = "SELECT clientID, firstName, middleInitial, lastName, sex, age, eyeColour, groupHomeStreet, groupHomeCity," \
+                    " groupHomePostal, groupHomeProvince, groupHomeCountry FROM CLIENT WHERE firstName = %s"
+            cursor.execute(query, (name,))
+            canView = cursor.fetchone()
+            result = jsonify(canView)
+            if canView:
+                result.status_code = 200
+                return result
+            else:
+                result.status_code = 404
+                return result
+        except Exception as e:
+            print(e)
+            print('Error: no Client found')
+        finally:
+            cursor.close()
+            connection.close()
+
+
+api.add_resource(Client, "/Client/<name>")
+
+
+class Family(Resource):  # for viewing client's mother and father information (youth name in all of the documents)
+    def get(self, clientID):
+        try:
+            connection = mysql.connect()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+            query = "SELECT firstName, lastName, phoneNumber, relationship, city FROM FAMILY_MEMBER WHERE clientID = %s"
+            cursor.execute(query, (clientID,))
+            canView = cursor.fetchall()
+            result = jsonify(canView)
+            if canView:
+                result.status_code = 200
+                return result
+            else:
+                result.status_code = 404
+                return result
+        except Exception as e:
+            print(e)
+            print('Error: no Client found')
+        finally:
+            cursor.close()
+            connection.close()
+
+
+api.add_resource(Family, "/Family/<clientID>")

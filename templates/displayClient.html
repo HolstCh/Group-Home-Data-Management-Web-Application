@@ -105,31 +105,45 @@
         </form>
 		<div class = "jumbotron">
 			<div>
-                <h1 class = "text-arial">Log Book Entry:</h1>
+                <h1 class = "text-arial">Youth's Information:</h1>
                 <table>
                     <tr>
-                        <th>Client's Name</th>
-                        <th>Day</th>
-                        <th>Month</th>
-                        <th>Year</th>
-                        <th>Event</th>
-                        <th>Behaviour</th>
-                        <th>Actions Taken</th>
-                        <th>Youth Worker's SIN</th>
+                        <th>Client ID</th>
+                        <th>First Name</th>
+                        <th>Middle Initial</th>
+                        <th>Last Name</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        <th>Eye Colour</th>
                     </tr>
                     <tr>
-                       <td><a href="http://127.0.0.1:5000/displayClient/{{rowData[0]}}">{{rowData[0]}}</a></td>
+                       <td><a href="http://127.0.0.1:5000/displayFamily/{{rowData[0]}}">{{rowData[0]}}</a></td>
                        <td>{{rowData[1]}}</td>
                        <td>{{rowData[2]}}</td>
                        <td>{{rowData[3]}}</td>
                        <td>{{rowData[4]}}</td>
                        <td>{{rowData[5]}}</td>
                        <td>{{rowData[6]}}</td>
-                       <td>{{rowData[7]}}</td>
                      </tr>
                 </table>
+                <h1 class = "text-arial">Youth's Current Group Home Location:</h1>
+                <table>
+                    <tr>
+                        <th>Street</th>
+                        <th>City</th>
+                        <th>Postal Code</th>
+                        <th>Province</th>
+                        <th>Country</th>
+                    </tr>
+                    <tr>
+                       <td>{{rowData[7]}}</td>
+                       <td>{{rowData[8]}}</td>
+                       <td>{{rowData[9]}}</td>
+                       <td>{{rowData[10]}}</td>
+                       <td>{{rowData[11]}}</td>
+                    </tr>
+                </table>
 			</div>
-
 			<footer class = "footer">
 				<p>&copy; CBM Company 2021</p>
 			</footer>

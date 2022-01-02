@@ -101,7 +101,7 @@
 			<h3 class = "text-muted">CBM Youth Assessment App</h3>
 		</div>
         <form>
-            <input type="button" value="Go Back to Your Main Page" onclick="history.back()">
+            <input type="button" value="Go Back" onclick="history.back()">
         </form>
 		<div class = "jumbotron">
 			<div>
@@ -140,7 +140,7 @@
                         <th>Psychologist's SIN</th>
                     </tr>
                     <tr>
-                       <td>{{rowData[0]}}</td>
+                       <td><a href="http://127.0.0.1:5000/displayClient/{{rowData[0]}}">{{rowData[0]}}</a></td>
                        <td>{{rowData[1]}}</td>
                        <td>{{rowData[2]}}</td>
                        <td>{{rowData[3]}}</td>

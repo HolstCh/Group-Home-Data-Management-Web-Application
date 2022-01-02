@@ -23,6 +23,7 @@ userSIN = 0  # user's sin is saved globally when logging in
 userName = ""  # user's username is saved globally when logging in
 userProfession = ""  # user's profession is saved globally when logging in
 
+
 @app.route("/")
 def main():
     return redirect(url_for("home", message=" "))
@@ -190,7 +191,7 @@ def verifyAccount(username, password, profession):
         print(userProfession)
         if not sin:
             print('Error: no account')
-            return redirect(url_for("home", message = "Username or password is incorrect!"))
+            return redirect(url_for("home", message="Username or password is incorrect!"))
         else:
             return redirect(url_for("loadPhysicalCodes"))
     except Exception as e:
@@ -211,7 +212,7 @@ def verifyProfession(username, password):
         cursor.execute(query, info)
         profType = cursor.fetchone()
         if not profType:
-            return redirect(url_for("home", message = "Username or password is incorrect!"))
+            return redirect(url_for("home", message="Username or password is incorrect!"))
         else:
             return redirect(url_for("verifyAccount", username=username, password=password, profession=profType[0]))
     except Exception as e:
@@ -395,6 +396,8 @@ def displayPHE(physicalShareCode):
         print(type(rowData))
     elif jsonObject.status_code == 404:
         print("PHE was not found")
+        easygui.msgbox(userName + ', your log book with a share code of ' + physicalShareCode + ' has not been found.',
+                       'Error!')
     return render_template('displayPHE.html', rowData=data)
 
 
@@ -409,6 +412,8 @@ def displayLog(logShareCode):
         print(rowData)
         print(type(rowData))
     elif jsonObject.status_code == 404:
+        easygui.msgbox(userName + ', your log book with a share code of ' + logShareCode + ' has not been found.',
+                       'Error!')
         print("PHE was not found")
     return render_template('displayLog.html', rowData=data)
 
@@ -424,8 +429,50 @@ def displayMHE(mentalShareCode):
         print(rowData)
         print(type(rowData))
     if jsonObject.status_code == 404:
+        easygui.msgbox(
+            userName + ', your Mental Health Evaluation with a share code of ' + mentalShareCode + ' has not been found.',
+            'Error!')
         print("MHE was not found")
     return render_template('displayMHE.html', rowData=data)
+
+
+@app.route("/displayClient/<name>", methods=["GET"])  # first sign up page for new account
+def displayClient(name):
+    jsonObject = get(BASE + "Client/" + name)
+    data = []
+    if jsonObject.status_code == 200:
+        rowData = json.loads(jsonObject.text)
+        rowData = rowData.values()
+        data = list(rowData)
+        print(rowData)
+        print(type(rowData))
+    if jsonObject.status_code == 404:
+        easygui.msgbox(
+            userName + ', the client named ' + name + ' has not been found.', 'Error!')
+        print("MHE was not found")
+    return render_template('displayClient.html', rowData=data)
+
+
+@app.route("/displayFamily/<clientID>", methods=["GET"])  # first sign up page for new account
+def displayFamily(clientID):
+    jsonObject = get(BASE + "Family/" + clientID)
+    dataOne = []
+    dataTwo = []
+    if jsonObject.status_code == 200:
+        rowData = json.loads(jsonObject.text)
+        rowOne = rowData[0]
+        rowTwo = rowData[1]
+        rowOne = rowOne.values()
+        rowTwo = rowTwo.values()
+        dataOne = list(rowOne)
+        dataTwo = list(rowTwo)
+        print(rowData)
+        print(type(rowData))
+    if jsonObject.status_code == 404:
+        easygui.msgbox(
+            userName + ', the family members of have not been found.', 'Error!')
+        print("MHE was not found")
+    return render_template('displayFamily.html', rowDataOne=dataOne, rowDataTwo=dataTwo)
 
 
 @app.route("/sharedFiles", methods=['GET'])  # universal shared files page where user's shared files are displayed
@@ -579,7 +626,7 @@ def moreNewAccount(user, password,
                 easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')
                 result = jsonify("New Account Created")
                 result.status_code = 200
-                return redirect(url_for("home", message = " "))  # go back to login page
+                return redirect(url_for("home", message=" "))  # go back to login page
             except Exception as e:
                 print(e)
             finally:

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<title>New Log</title>
+	<style>
+
+		body
+        {
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+
+		.form-signin .checkbox
+        {
+			font-weight: normal;
+		}
+
+		.form-signin .form-control {
+			height:  auto;
+			width:  auto;
+			padding:  10px;
+			font-size: 16px;
+		}
+
+		.form-signin input {
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.header {
+	  		padding: 30px;
+	  		text-align: center;
+	  		background: #4678A5;
+	  		color: white;
+	  		font-size: 30px;
+	  		font-family: Arial;
+		}
+
+		.footer {
+	  		padding: 30px;
+	  		background: #4678A5;
+	  		color: white;
+		}
+
+		.button {
+			text-decoration: none;
+			font-size: 16px;
+			border-radius: 4px;
+			padding: 15px;
+			margin: 0 auto;
+			background-color: white;
+			color: black;
+			border: 2px solid #4678A5;
+			transition-duration: 0.4s;
+		}
+
+		.button:active {
+			color: white;
+			background-color: #4678A5;
+			box-shadow: 0 1px #666;
+			transform: translateY(2px);
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+		}
+
+		.form-signin label {
+			display: inline-block;
+        	width: 140px;
+    	}
+
+    	.text-arial {
+			font-family: Arial;
+		}
+
+        tr { display: block; float: left; }
+        th, td { display: block; border: 1px solid black; }
+
+        tr>*:not(:first-child) { border-top: 0; }
+        tr:not(:first-child)>* { border-left:0; }
+
+                    input[type=button] {
+              background-color: #4678A5;
+              border: none;
+              color: white;
+              padding: 16px 32px;
+              text-decoration: none;
+              margin: 4px 2px;
+              cursor: pointer;
+            }
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "header">
+			<img src="/static/Youth.png" alt="logo" style="width:150px;height:150px;">
+			<h3 class = "text-muted">CBM Youth Assessment App</h3>
+		</div>
+        <form>
+            <input type="button" value="Go Back" onclick="history.back()">
+        </form>
+		<div class = "jumbotron">
+			<div>
+                <h1 class = "text-arial">Mother's Information:</h1>
+                <table>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Relationship</th>
+                        <th>City</th>
+                    </tr>
+                    <tr>
+                       <td>{{rowDataOne[0]}}</td>
+                       <td>{{rowDataOne[1]}}</td>
+                       <td>{{rowDataOne[2]}}</td>
+                       <td>{{rowDataOne[3]}}</td>
+                       <td>{{rowDataOne[4]}}</td>
+                     </tr>
+                </table>
+                <h1 class = "text-arial">Father's information:</h1>
+                <table>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Relationship</th>
+                        <th>City</th>
+                    </tr>
+                    <tr>
+                       <td>{{rowDataTwo[0]}}</td>
+                       <td>{{rowDataTwo[1]}}</td>
+                       <td>{{rowDataTwo[2]}}</td>
+                       <td>{{rowDataTwo[3]}}</td>
+                       <td>{{rowDataTwo[4]}}</td>
+                     </tr>
+                </table>
+			</div>
+
+			<footer class = "footer">
+				<p>&copy; CBM Company 2021</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

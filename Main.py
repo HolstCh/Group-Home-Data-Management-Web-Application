@@ -616,11 +616,11 @@ def moreNewAccount(user, password,
                 connection.commit()
 
                 if professionType == "Youth Worker":
-                    post(BASE + sin)
+                    post(BASE + "Youth/" + sin)
                 elif professionType == "Pediatrician":
-                    post(BASE + sin)
+                    post(BASE + "Ped/" + sin)
                 elif professionType == "Psychologist":
-                    post(BASE + sin)
+                    post(BASE + "Psy/" + sin)
 
                 print(cursor.rowcount, "record inserted.")
                 easygui.msgbox(user + ', your new ' + professionType + ' account was created successfully.', 'Success!')

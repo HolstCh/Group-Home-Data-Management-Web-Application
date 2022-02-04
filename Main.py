@@ -42,22 +42,22 @@ def home(message):
         password = request.form["inputPassword"]
         return redirect(url_for("verifyProfession", username=user, password=password))
     else:
-        return render_template('designApp.html', message=message)
+        return render_template('loginPage.html', message=message)
 
 
 @app.route("/accountYouth")  # user Youth Worker's main page
 def accountYouth():
-    return render_template('designAccYouth.html', usr=userName, profession=userProfession)
+    return render_template('youthMainPage.html', usr=userName, profession=userProfession)
 
 
 @app.route("/accountPed")  # user Pediatrician's main page
 def accountPed():
-    return render_template('designAccPed.html', usr=userName, profession=userProfession)
+    return render_template('pedMainPage.html', usr=userName, profession=userProfession)
 
 
 @app.route("/accountPsy")  # user Psychologist's main page
 def accountPsy():
-    return render_template('designAccPsy.html', usr=userName, profession=userProfession)
+    return render_template('psyMainPage.html', usr=userName, profession=userProfession)
 
 
 @app.route("/mainPage")  # deciphers which main page to direct to depending on the profession type (user type)
@@ -570,7 +570,7 @@ def newAccount():
         return redirect(
             url_for("moreNewAccount", user=user, password=password, profession=profession))  # go to user's account page
     else:
-        return render_template('designNew.html')
+        return render_template('registrationPartOne.html')
 
 
 @app.route("/moreNewAccount/<user>/<password>/<profession>", methods=["POST", "GET"])
@@ -596,7 +596,7 @@ def moreNewAccount(user, password,
         if newUser.status_code == 400:
             easygui.msgbox(user + ', the ' + professionType + ' account with the SIN of ' + sin + ' already exists',
                            'Error!')
-            return render_template('moreDesignNew.html', user=user)
+            return render_template('registrationPartTwo.html', user=user)
         elif newUser.status_code == 200:
             try:
                 connection = mysql.connect()
@@ -633,9 +633,7 @@ def moreNewAccount(user, password,
                 cursor.close()
                 connection.close()
     else:
-        return render_template('moreDesignNew.html', user=user)
-
+        return render_template('registrationPartTwo.html', user=user)
 
 if __name__ == "__main__":
     app.run(debug=True)
-

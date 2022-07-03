@@ -1,4 +1,4 @@
-# Youth_Project_CPSC471
+# At-Risk Youth Group Home Web Application 
 
 A project inspired by the disorganization of my brother's group home. Group homes have many professionals involved but the application allows for three professionals 
 to share data involving a youth at risk. The user types are: youth worker, psychologist, and pediatrician. Each user type is able to create a "document" which involves

@@ -20,6 +20,16 @@ Before running the application, ensure that you have the following dependencies 
 - Flask
 - MySQL Database
 
+## Database Design
+
+### Extended Entity-Relationship Model (EER)
+
+<img src="images/EER.jpg" alt="Alt Text" width="1000" height="700"/>
+
+### Relational Model (RM)
+
+<img src="images/RM.jpg" alt="Alt Text" width="1000" height="700"/>
+
 ## Getting Started
 
 1. **Clone the repository to your local machine:**

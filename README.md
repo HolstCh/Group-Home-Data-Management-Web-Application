@@ -1,7 +1,5 @@
 # Group Home Data Management Application 
 
-# Professional Health Records Web App
-
 The Group Home Data Management App is a Flask-based web application designed to facilitate the management and sharing of health records among group home professionals. Group homes, inherently complex environments with involvement from various professionals, often encounter issues related to data sharing and organization. This application supports different user roles, including Youth Workers, Pediatricians, and Psychologists, each with specialized functionalities tailored to their professions.
 
 ## Features
